@@ -39,6 +39,8 @@ function checkMathematics() {
 
 async function main() {
   checkMathematics();
+  const demo = JSON.parse(await fs.readFile(path.join(root, 'content/demo.json'), 'utf8'));
+  const questionCount = demo.questions.length;
   const browser = await chromium.launch({headless:true,
     ...(process.env.CHROMIUM_PATH ? {executablePath:process.env.CHROMIUM_PATH} : {})});
   const bases=[{name:'file',url:pathToFileURL(dist+path.sep).href}];
@@ -83,10 +85,10 @@ async function main() {
       assert.equal(await page.locator('.home-volume').filter({has:page.locator('.public-catalog-item')}).count(),12);
       await noOverflow(); await linksWork(); await shot('home');
       await page.click('#search-all');
-      await page.waitForFunction(()=>document.querySelectorAll('.search-result').length===3);
+      await page.waitForFunction(count=>document.querySelectorAll('.search-result').length===count,Math.min(questionCount,30));
       const index=await page.evaluate(()=>window.BOOK_SEARCH_INDEX);
-      assert.equal(index.length,3);
-      assert.deepEqual(index.map(q=>q.id),['Q01','Q02','Q03']);
+      assert.equal(index.length,questionCount);
+      assert.deepEqual(index.map(q=>q.id),demo.questions.map(q=>q.id));
       assert.ok(index.every(q=>q.chapter==='DEMO-01' && !('answer' in q) && !('solution' in q)));
       for(const edition of ['teacher','student']) for(const question of expected) {
         await goto(`index.html?q=${question.id}&e=${edition}`);
@@ -101,7 +103,7 @@ async function main() {
             return copy.textContent;
           }).join(''));
         assert.equal(normalize(renderedStem),normalize(question.stem),'题干与独立期望不符');
-        assert.equal(await page.locator('.solution').count(),edition==='teacher'?3:0);
+        assert.equal(await page.locator('.solution').count(),edition==='teacher'?questionCount:0);
         if(edition==='student') {
           assert.equal(await page.locator('.toggle-solutions').count(),0);
           assert.equal(await page.locator('.book-content').evaluate(n=>/取等检查|典型错解|解题笔记|<strong>答案/.test(n.innerHTML)),false);
@@ -110,8 +112,20 @@ async function main() {
         const returnHash=await page.locator(`#${question.id} .question-type-link`).getAttribute('href');
         await page.click(`#${question.id} .question-type-link`);
         await page.waitForFunction(hash=>location.hash===hash&&document.querySelector(hash).closest('.type-family').open,returnHash);
-        await page.click(`${returnHash} .type-links a`);
+        await page.click(`${returnHash} .type-links a[href="#${question.id}"]`);
         assert.equal(new URL(page.url()).hash,`#${question.id}`);
+      }
+      // Published numeric links and persistent IDs survive direct entry and edition changes.
+      for(const [legacy, typeId] of Object.entries(demo.legacy_type_anchors)) {
+        for(const hash of [legacy, `type-${typeId}`]) {
+          await goto(`chapters/DEMO-01-teacher.html#${hash}`,true);
+          assert.equal(await page.locator(`#${hash}`).evaluate(n=>n.closest('.type-group').id),`type-${typeId}`);
+          assert.equal(await page.locator(`#${hash}`).evaluate(n=>n.closest('.type-family').open),true);
+          await page.click('.top-right a');
+          await page.waitForFunction(()=>document.documentElement.dataset.ready==='true');
+          assert.equal(new URL(page.url()).hash,`#${hash}`);
+          assert.equal(await page.locator(`#${hash}`).evaluate(n=>n.closest('.type-family').open),true);
+        }
       }
       await goto('chapters/DEMO-01-teacher.html',true);
       assert.equal(await page.locator('.sidebar .chapter-link:not(a)').count(),45);
@@ -121,7 +135,7 @@ async function main() {
       assert.ok(initialMath.rendered>0&&initialMath.rendered<initialMath.total);
       assert.equal(initialMath.hiddenRendered,0,'未展开答案提前渲染');
       await page.click('.toggle-solutions');
-      await page.waitForFunction(()=>document.querySelectorAll('.solution[open]').length===3);
+      await page.waitForFunction(count=>document.querySelectorAll('.solution[open]').length===count,questionCount);
       assert.equal(await page.evaluate(()=>BookMath.rendered===BookMath.total),true);
       for(const question of expected) {
         const text=await page.locator(`#${question.id} .solution`).evaluate(n=>{
@@ -148,8 +162,8 @@ async function main() {
       assert.deepEqual(await page.evaluate(()=>BookMath.errors),[]);
       await noOverflow();await linksWork();await shot('student');
       assert.deepEqual(failures,[]);
-      records.push({transport:base.name,width,catalog:45,searchQuestions:3,searchJumps:6,
-        typeRoundTrips:6,lazyMath:initialMath,mathErrors:0,studentSolutions:0,pageOverflow:false,
+      records.push({transport:base.name,width,catalog:45,searchQuestions:questionCount,searchJumps:expected.length*2,
+        typeRoundTrips:expected.length*2,lazyMath:initialMath,mathErrors:0,studentSolutions:0,pageOverflow:false,
         scrollableLongFormulas:scrollFormulas.length,brokenLinks:0});
       await page.close();
     }

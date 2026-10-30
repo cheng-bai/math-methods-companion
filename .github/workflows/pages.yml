@@ -31,6 +31,8 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Build And Check Links
         run: python3 scripts/build.py
+      - name: Check Type Grouping
+        run: python3 tests/grouping.py
       - name: Check Browser Interaction
         run: node tests/browser.cjs
       - uses: actions/upload-pages-artifact@v3

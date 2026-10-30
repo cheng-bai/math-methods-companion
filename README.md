@@ -8,7 +8,7 @@
 ## 现在能读什么
 
 - 12个板块、45讲的目录元数据，清楚显示当前主题在全书的位置。
-- 基本不等式的3道自编教学演示，提供教师、学生两版。
+- 基本不等式的自编教学演示，提供教师、学生两版。
 - 可展开的细题型导航、题号直达、题型回跳、搜索和版本切换。
 - 本地 KaTeX 公式与字体，无 CDN 运行依赖；可离线直接打开 `dist/index.html`。
 - 解析按需渲染，首次阅读不生成闭合解析的全部公式；索引首次检索才加载。
@@ -40,12 +40,20 @@ python3 -m http.server 8000 --bind 127.0.0.1 --directory dist
 数学源码用标准 LaTeX，行内 `$...$`，独立公式 `$$...$$`。分数使用 `\frac` 或 `\dfrac`，
 不要把斜线分数的自动猜测替换当作数学审校。修改示例后，应重新核算答案与达到性。
 
+每道题必须设置永久稳定的 `type_id`（小写字母开头，只含小写字母、数字、连字符；`map` 为保留值）。
+题型按 `type_family`、`type_title` 两级归组：同一大类下标题相同的题目并入同一细题型，
+不同大类中即使标题相同也分别归类。每道题的「题型入口」指向所属细题型，细题型列出所有对应题号。
+同一细题型须共享同一个 `type_id`，不同题型不能复用 ID；`type_note` 应保持一致，展示时采用该组第一题的说明。
+题型锚点由 `type_id` 生成，不随排序变化；变更标题时保留原 ID。题号使用 Q 加数字，大小写归一后必须唯一。
+已公开的数字题型旧锚点通过 `legacy_type_anchors` 持续映射，删除或重命名类型时须先处理已有链接。
+
 浏览器测试需要 Node.js 20+（CI 使用22），是开发依赖，不会发送到读者端：
 
 ```sh
 npm ci
 npx playwright install chromium
 python3 scripts/build.py
+python3 tests/grouping.py
 node tests/browser.cjs
 # 对线上版本运行相同交互检查：
 PUBLIC_BASE_URL=https://cheng-bai.github.io/math-methods-companion/ node tests/browser.cjs

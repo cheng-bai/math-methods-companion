@@ -17,7 +17,8 @@
       "answer": "$\\dfrac{49}{9}$。",
       "solution": "条件给出的是$x+y$固定，而不是两个倒数项相等。因此先乘回这个固定的和，把目标与可控的平方联系起来。\n\n由$x+y=9$，得\n\n$$\\begin{aligned}&9\\left(\\frac4x+\\frac{25}y\\right)-49\\\\&\\quad=\\frac{(5x-2y)^2}{xy}\\ge0.\\end{aligned}$$\n\n其中$xy>0$，所以平方项除以$xy$仍非负。故$\\dfrac4x+\\dfrac{25}y\\ge\\dfrac{49}{9}$。",
       "equality": "等号当且仅当$5x=2y$。结合$x+y=9$，得$x=\\dfrac{18}{7},\\ y=\\dfrac{45}{7}$，两者均为正，且和为9；代入目标得$\\dfrac{49}{9}$。因此下界可以取到，最小值为$\\dfrac{49}{9}$。",
-      "note": "加权倒数和的取等比例由配方决定，不能直接令$\\dfrac4x=\\dfrac{25}y$。先求下界，再将取等关系与原约束联立检查。"
+      "note": "加权倒数和的取等比例由配方决定，不能直接令$\\dfrac4x=\\dfrac{25}y$。先求下界，再将取等关系与原约束联立检查。",
+      "type_id": "fixed-sum-reciprocals"
     },
     {
       "id": "Q02",
@@ -31,7 +32,8 @@
       "answer": "$8$。",
       "solution": "分母$x-2$为正，令$t=x-2>0$，可把分式整理成正数与其倒数的和。\n\n有\n\n$$\\frac{x^2}{x-2}=\\frac{(t+2)^2}{t}=t+4+\\frac4t.$$\n\n由基本不等式，\n\n$$t+\\frac4t\\ge2\\sqrt{t\\cdot\\frac4t}=4,$$\n\n因此$\\dfrac{x^2}{x-2}\\ge8$。",
       "equality": "等号当且仅当$t=\\dfrac4t$。因$t>0$，得$t=2$，即$x=4$。该值满足$x>2$，且$\\dfrac{4^2}{4-2}=8$，故最小值为8。",
-      "note": "设$t=x-2$不仅是换符号，还把定义域同步变成$t>0$。应用基本不等式前应先确认正性，求出候选后再代回原式。"
+      "note": "设$t=x-2$不仅是换符号，还把定义域同步变成$t>0$。应用基本不等式前应先确认正性，求出候选后再代回原式。",
+      "type_id": "shifted-denominator"
     },
     {
       "id": "Q03",
@@ -45,7 +47,13 @@
       "answer": "$4$。",
       "solution": "目标同时含$a^2+b^2$与$a+b$，而$ab$已知，可用平方恒等式把目标统一写成$a+b$的式子。\n\n令$s=a+b$。由基本不等式，$s\\ge2\\sqrt{ab}=2$。又\n\n$$a^2+b^2+a+b=(a+b)^2-2ab+(a+b)=s^2+s-2.$$\n\n因为$s\\ge2$，所以\n\n$$s^2+s-2-4=(s-2)(s+3)\\ge0.$$\n\n故$a^2+b^2+a+b\\ge4$。",
       "equality": "等号当且仅当$s=2$。结合$a+b=2$、$ab=1$，得$a=b=1$，满足原来的正数与定积条件；此时目标为4。因此最小值为4。",
-      "note": "整体换元要同时给出$s$的可行范围。这里$s=2$能由$a=b=1$实现，不能只证明目标不小于4而省略达到性。"
+      "note": "整体换元要同时给出$s$的可行范围。这里$s=2$能由$a=b=1$实现，不能只证明目标不小于4而省略达到性。",
+      "type_id": "fixed-product-sum"
     }
-  ]
+  ],
+  "legacy_type_anchors": {
+    "type-1-1": "fixed-sum-reciprocals",
+    "type-2-1": "shifted-denominator",
+    "type-3-1": "fixed-product-sum"
+  }
 }

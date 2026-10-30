@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const editionLink = document.querySelector('.top-right a');
   const editionHref = editionLink.getAttribute('href');
   editionLink.addEventListener('click', () => {
-    const sharedHash = /^#(?:q\d+|type-\d+-\d+)$/i.test(location.hash) ? location.hash : '';
+    const sharedHash = /^#(?:q\d+|type-(?:[a-z][a-z0-9-]*|\d+-\d+))$/i.test(location.hash) ? location.hash : '';
     editionLink.setAttribute('href', editionHref + sharedHash);
   });
   function setMenu(open) {sidebar.classList.toggle('open',open);backdrop.hidden=!open;menu.setAttribute('aria-expanded',String(open));}
