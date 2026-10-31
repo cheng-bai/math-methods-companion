@@ -1,6 +1,7 @@
 'use strict';
 const cards=[...document.querySelectorAll('.knowledge-card')];
 const groups=[...document.querySelectorAll('.knowledge-group')];
+const topics=[...document.querySelectorAll('.knowledge-topic')];
 const query=document.querySelector('#knowledge-query');
 const volume=document.querySelector('#knowledge-volume');
 const status=document.querySelector('#knowledge-count');
@@ -52,7 +53,9 @@ function filter(remember=true){
     card.hidden=Boolean(volume.value&&card.closest('.knowledge-group').dataset.volume!==volume.value)||!words.every(w=>card.dataset.search.includes(w));
     if(!card.hidden) count++;
   }
+  for(const topic of topics) topic.hidden=![...topic.querySelectorAll('.knowledge-card')].some(card=>!card.hidden);
   for(const group of groups) group.hidden=![...group.querySelectorAll('.knowledge-card')].some(card=>!card.hidden);
+  for(const link of document.querySelectorAll('.knowledge-topic-nav a')) link.hidden=document.getElementById(link.hash.slice(1)).hidden;
   status.textContent=`显示 ${count} / ${cards.length} 张知识卡；卡片不等于配套练习已完成。`;
   document.querySelector('#knowledge-empty').hidden=count>0;
   if(remember){
@@ -71,10 +74,10 @@ function revealHash(){
   requestAnimationFrame(()=>target.scrollIntoView({block:'start',behavior:'instant'}));
 }
 // Category links are navigational: a previous search must not hide their target.
-document.querySelector('.knowledge-nav nav').addEventListener('click',event=>{
-  if(!event.target.closest('a')) return;
-  query.value='';volume.value='';filter();
-});
+for(const nav of document.querySelectorAll('.knowledge-nav nav,.knowledge-topic-nav')) nav.addEventListener('click',event=>{
+    if(!event.target.closest('a')) return;
+    query.value='';volume.value='';filter();
+  });
 window.addEventListener('hashchange',revealHash);
 window.addEventListener('popstate',()=>{
   const params=new URLSearchParams(location.search);query.value=params.get('q')||'';volume.value=params.get('v')||'';filter(false);revealHash();

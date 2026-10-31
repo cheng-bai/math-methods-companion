@@ -23,7 +23,8 @@ async function main(){
       const noOverflow=async()=>assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,'整页横向溢出');
       await goto('knowledge.html');
       assert.equal(await page.locator('.knowledge-card').count(),data.cards.length);
-      assert.equal(await page.locator('.knowledge-group').count(),4);
+      assert.equal(await page.locator('.knowledge-group').count(),new Set(data.cards.map(c=>c.volume)).size);
+      assert.equal(await page.locator('.knowledge-topic').count(),new Set(data.cards.map(c=>c.section)).size);
       assert.equal(await page.locator('.knowledge-card[open]').count(),0);
       assert.equal(await page.evaluate(()=>typeof window.katex),'undefined');
       assert.equal(requests.some(url=>/katex|search-index/.test(url)),false,'初始页不应加载公式引擎、字体或题库索引');
@@ -35,6 +36,8 @@ async function main(){
       await page.fill('#knowledge-query','向量 夹角');
       assert.ok(await page.locator('.knowledge-card:visible').count()>0);
       assert.ok(await page.locator('.knowledge-card:visible').count()<data.cards.length);
+      assert.equal(await page.locator('.knowledge-topic:not([hidden]) .knowledge-card:visible').count(),await page.locator('.knowledge-card:visible').count());
+      assert.equal(await page.locator('.knowledge-topic-nav a:not([hidden])').evaluateAll(links=>links.every(link=>!document.getElementById(link.hash.slice(1)).hidden)),true);
       await page.reload();
       await page.waitForFunction(()=>document.documentElement.dataset.ready==='true');
       assert.equal(await page.inputValue('#knowledge-query'),'向量 夹角');
@@ -44,6 +47,18 @@ async function main(){
       await page.click('#knowledge-clear');
       assert.equal(await page.locator('.knowledge-card:visible').count(),data.cards.length);
       assert.equal(await page.locator('#knowledge-query').evaluate(n=>document.activeElement===n),true);
+      await page.fill('#knowledge-query','向量 夹角');
+      const topicLink=page.locator('.knowledge-topic-nav a:visible').first();
+      const topicHash=await topicLink.getAttribute('href');
+      await topicLink.click();
+      await page.waitForFunction(hash=>location.hash===hash,topicHash);
+      assert.equal(await page.inputValue('#knowledge-query'),'','主题导航须清除阻挡内容的旧筛选');
+      assert.equal(await page.locator('.knowledge-card:visible').count(),data.cards.length);
+      const topicNavCount=await page.locator('.knowledge-topic-nav a').count();
+      assert.equal(topicNavCount,new Set(data.cards.map(c=>c.section)).size);
+      await goto(`knowledge.html?q=不存在的卡片xyz${topicHash}`);
+      assert.equal(await page.inputValue('#knowledge-query'),'','被隐藏教材节的深链接须恢复目标');
+      assert.equal(await page.locator(topicHash).isVisible(),true);
       await page.selectOption('#knowledge-volume','09 复数');
       assert.equal(await page.locator('.knowledge-card:visible').count(),11);
       await page.click('.knowledge-nav a[href="#group-02"]');
@@ -96,7 +111,7 @@ async function main(){
       const origins=requests.filter(url=>/^https?:/.test(url)).map(url=>new URL(url).origin);
       assert.ok(origins.every(origin=>origin===new URL(base.url).origin),'出现远程资源依赖');
       assert.deepEqual(failures,[]);
-      records.push({transport:base.name,width,cards:data.cards.length,initial,firstOpenMs,renderAllMs,allCardToggles:data.cards.length*2,mathErrors:0,overflow:false});
+      records.push({transport:base.name,width,cards:data.cards.length,topicLinks:topicNavCount,initial,firstOpenMs,renderAllMs,allCardToggles:data.cards.length*2,mathErrors:0,overflow:false});
       await page.close();
       const retry=await browser.newPage();
       await retry.route('**/katex.min.js',r=>r.abort());

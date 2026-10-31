@@ -1,6 +1,7 @@
 """Publish only reviewed author-written knowledge cards and catalog metadata."""
 from collections import OrderedDict
 from html import escape
+import hashlib
 import re
 
 
@@ -23,6 +24,11 @@ def validate(data, catalog):
             raise ValueError('知识卡关联目录不存在')
 
 
+def section_anchor(section):
+    identity = section.split(' ', 1)[0]
+    return 'section-' + hashlib.sha256(identity.encode()).hexdigest()[:8]
+
+
 def page(data, catalog, markdown, brand):
     h = lambda value: escape(str(value), quote=True)
     validate(data, catalog)
@@ -33,16 +39,18 @@ def page(data, catalog, markdown, brand):
     for volume, cards in groups.items():
         number, title = volume.split(' ', 1)
         nav.append(f'<a href="#group-{h(number)}">{h(title)}<span>{len(cards):02}</span></a>')
-        rows = []
+        topic_rows = OrderedDict()
         for card in cards:
             chapter_links = ''.join(f'<a href="index.html?catalog={h(c)}#catalogue">{h(c)}</a>' for c in card['chapters'])
             search = h(' '.join(card[k] for k in ('title', 'volume', 'section', 'formula', 'recognize', 'caution')).lower())
-            rows.append(f'''<details class="knowledge-card" id="{h(card['id'])}" data-search="{search}">
+            topic_rows.setdefault(card['section'], []).append(f'''<details class="knowledge-card" id="{h(card['id'])}" data-search="{search}">
 <summary><span><small>{h(card['section'])}</small><p>{h(card['title'].replace('$', ''))}</p></span><span class="card-action" aria-hidden="true">＋</span></summary>
 <div class="knowledge-detail"><p class="math-state" role="status"></p><div class="knowledge-formula">{markdown(card['formula'])}</div>
 <div class="knowledge-notes"><section><h3>什么时候用</h3>{markdown(card['recognize'])}</section><section class="knowledge-caution"><h3>别踩这个坑</h3>{markdown(card['caution'])}</section></div>
 <div class="knowledge-context"><span>全书位置 · 相关讲目录（正文未公开）</span>{chapter_links}<a class="permalink" href="#{h(card['id'])}">定位此卡 ↗</a></div></div></details>''')
-        sections.append(f'<section class="knowledge-group" id="group-{h(number)}" data-volume="{h(volume)}"><header><span>{h(number)}</span><h2>{h(title)}</h2><small>{len(cards)} 张知识卡</small></header>{"".join(rows)}</section>')
+        topic_nav = ''.join(f'<a href="#{section_anchor(section)}">{h(section.split(" ", 1)[-1])}</a>' for section in topic_rows)
+        rows = ''.join(f'<section class="knowledge-topic" id="{section_anchor(section)}"><h3>{h(section)}</h3>{"".join(items)}</section>' for section, items in topic_rows.items())
+        sections.append(f'<section class="knowledge-group" id="group-{h(number)}" data-volume="{h(volume)}"><header><span>{h(number)}</span><h2>{h(title)}</h2><small>{len(cards)} 张知识卡</small></header><nav class="knowledge-topic-nav" aria-label="{h(title)}主题跳转">{topic_nav}</nav>{rows}</section>')
     options = ''.join(f'<option value="{h(v)}">{h(v)}</option>' for v in groups)
     return f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>知识速查 · 高中数学解析字典</title><link rel="stylesheet" href="assets/site.css"><link rel="stylesheet" href="assets/knowledge.css"><script defer src="assets/knowledge.js"></script></head>
 <body id="top"><header class="topbar">{brand()}<div class="top-right"><span class="edition">编者知识速查</span><a href="index.html">全书目录 ↗</a></div></header>

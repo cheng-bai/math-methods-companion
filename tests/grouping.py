@@ -110,6 +110,13 @@ class PublicKnowledgeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, '目录不存在'):
             build.validate_knowledge(self.cards, self.catalog)
 
+    def test_section_links_do_not_depend_on_title_or_order(self):
+        from knowledge import section_anchor
+        self.assertEqual(section_anchor('必修第二册-7.3 原标题'),
+                         section_anchor('必修第二册-7.3 新标题'))
+        self.assertNotEqual(section_anchor('必修第二册-7.2 新标题'),
+                            section_anchor('必修第二册-7.3 新标题'))
+
 
 if __name__ == '__main__':
     unittest.main()
