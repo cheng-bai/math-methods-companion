@@ -30,13 +30,14 @@ python3 scripts/build.py
 python3 -m http.server 8000 --bind 127.0.0.1 --directory dist
 ```
 
-输入只有三份明确的公开内容，采用白名单字段；不从私人书稿目录自动复制：
+输入为三份公开内容与一份显式关联清单；目录、知识卡和关联采用白名单字段，不从私人书稿目录自动复制：
 
 | 文件 | 用途 |
 | --- | --- |
 | `content/catalog.json` | 章节编号、标题、板块三个字段，不能放入原题正文或来源路径 |
 | `content/demo.json` | 自编演示的题干、答案、解析、取等检查、方法笔记与细题型 |
 | `content/knowledge.json` | 已复核的编者知识概括及目录位置，不含原题、原图、源文件路径或本地回源账本 |
+| `content/example-links.json` | 已复核的知识卡与公开题关联，仅卡ID、题ID、对应动作 |
 | `assets/` | 阅读样式、交互与本地 KaTeX；不含私人题图 |
 | `scripts/build.py` | 静态生成与链接、锚点、学生答案隔离检查 |
 | `tests/browser.cjs` | 桌面／手机浏览器交互测试 |
