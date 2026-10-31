@@ -41,7 +41,8 @@ function samples(){
         await page.goto(new URL(`index.html?q=${q.id}&e=${edition}`,base).href);
         await page.waitForFunction(()=>document.querySelectorAll('.search-result').length===1);
         await page.locator('.search-result').click();
-        await page.waitForFunction(()=>document.documentElement.dataset.ready==='true');
+        await page.waitForURL(url=>url.href.endsWith(`${chapter.id}-${edition}.html#${q.id.toLowerCase()}`));
+        await page.waitForFunction(()=>document.documentElement?.dataset.ready==='true');
         assert.ok(page.url().endsWith(`${chapter.id}-${edition}.html#${q.id.toLowerCase()}`));
         assert.equal(await page.locator('.question').count(),4);
         assert.equal(await page.locator('.solution').count(),edition==='teacher'?4:0);
