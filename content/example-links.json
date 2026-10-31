@@ -1,9 +1,98 @@
 [
-  {"card_id":"k-3b22fa72","question_id":"Q01","focus":"和固定、倒数带系数：乘回定和，用平方非负求下界"},
-  {"card_id":"k-3b22fa72","question_id":"Q02","focus":"分母有平移：换成正数，再用基本不等式"},
-  {"card_id":"k-3b22fa72","question_id":"Q03","focus":"积固定、含平方和：先设两数和，找出它的范围"},
-  {"card_id":"k-3b22fa72","question_id":"Q04","focus":"多了一条比例限制：先查原来的取等点还能不能用"},
-  {"card_id":"k-3b22fa72","question_id":"Q05","focus":"区间端点取不取：分清下界与能取到的最小值"},
-  {"card_id":"k-2889c7de","question_id":"Q04","focus":"只练其中一步：与边界值作差，利用因子符号比较大小"},
-  {"card_id":"k-2889c7de","question_id":"Q05","focus":"只练其中一步：与端点值作差，判断不等号是否严格"}
+  {
+    "card_id": "k-3b22fa72",
+    "question_id": "Q01",
+    "focus": "和固定、倒数带系数：乘回定和，用平方非负求下界",
+    "chapter_id": "DEMO-01"
+  },
+  {
+    "card_id": "k-3b22fa72",
+    "question_id": "Q02",
+    "focus": "分母有平移：换成正数，再用基本不等式",
+    "chapter_id": "DEMO-01"
+  },
+  {
+    "card_id": "k-3b22fa72",
+    "question_id": "Q03",
+    "focus": "积固定、含平方和：先设两数和，找出它的范围",
+    "chapter_id": "DEMO-01"
+  },
+  {
+    "card_id": "k-3b22fa72",
+    "question_id": "Q04",
+    "focus": "多了一条比例限制：先查原来的取等点还能不能用",
+    "chapter_id": "DEMO-01"
+  },
+  {
+    "card_id": "k-3b22fa72",
+    "question_id": "Q05",
+    "focus": "区间端点取不取：分清下界与能取到的最小值",
+    "chapter_id": "DEMO-01"
+  },
+  {
+    "card_id": "k-2889c7de",
+    "question_id": "Q04",
+    "focus": "只练其中一步：与边界值作差，利用因子符号比较大小",
+    "chapter_id": "DEMO-01"
+  },
+  {
+    "card_id": "k-2889c7de",
+    "question_id": "Q05",
+    "focus": "只练其中一步：与端点值作差，判断不等号是否严格",
+    "chapter_id": "DEMO-01"
+  },
+  {
+    "card_id": "k-d5d9688c",
+    "chapter_id": "DEMO-02",
+    "question_id": "Q101",
+    "focus": "区间固定、顶点会动：比较顶点和两个端点"
+  },
+  {
+    "card_id": "k-d5d9688c",
+    "chapter_id": "DEMO-02",
+    "question_id": "Q102",
+    "focus": "任意两点的值差都受限：先求最大值与最小值之差"
+  },
+  {
+    "card_id": "k-7824b71e",
+    "chapter_id": "DEMO-02",
+    "question_id": "Q103",
+    "focus": "含绝对值的方程：分成两条水平线，分类数不同交点"
+  },
+  {
+    "card_id": "k-7824b71e",
+    "chapter_id": "DEMO-02",
+    "question_id": "Q104",
+    "focus": "只对应计根步骤：拆绝对值后，筛掉不在换元范围内的根"
+  },
+  {
+    "card_id": "k-7ba5eaf1",
+    "chapter_id": "DEMO-02",
+    "question_id": "Q104",
+    "focus": "只练换元条件：指数值为正，且每个正值对应唯一原变量"
+  },
+  {
+    "card_id": "k-923961c6",
+    "chapter_id": "DEMO-06",
+    "question_id": "Q201",
+    "focus": "递推多了常数项：找一个平移量，把相邻关系变成等比"
+  },
+  {
+    "card_id": "k-923961c6",
+    "chapter_id": "DEMO-06",
+    "question_id": "Q202",
+    "focus": "递推系数含参数：检查平移失效与零数列等退化情况"
+  },
+  {
+    "card_id": "k-a4e72840",
+    "chapter_id": "DEMO-06",
+    "question_id": "Q201",
+    "focus": "只对应求和步骤：对平移后的等比数列求和，再减回常数项"
+  },
+  {
+    "card_id": "k-119c118d",
+    "chapter_id": "DEMO-06",
+    "question_id": "Q203",
+    "focus": "只练增减判断：新增一项为正，部分和随项数严格增大"
+  }
 ]

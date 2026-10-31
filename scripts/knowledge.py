@@ -29,7 +29,7 @@ def section_anchor(section):
     return 'section-' + hashlib.sha256(identity.encode()).hexdigest()[:8]
 
 
-def page(data, catalog, markdown, brand, example_links=(), demo_id='DEMO-01'):
+def page(data, catalog, markdown, brand, example_links=()):
     h = lambda value: escape(str(value), quote=True)
     validate(data, catalog)
     groups = OrderedDict()
@@ -45,7 +45,7 @@ def page(data, catalog, markdown, brand, example_links=(), demo_id='DEMO-01'):
             for row in example_links:
                 if row['card_id'] != card['id']:
                     continue
-                routes = ''.join(f'<a href="chapters/{h(demo_id)}-{edition}.html#{h(row["question_id"].lower())}" aria-label="{h(row["question_id"])}{label}">{label} ↗</a>' for edition, label in (('teacher', '教师版'), ('student', '学生版')))
+                routes = ''.join(f'<a href="chapters/{h(row["chapter_id"])}-{edition}.html#{h(row["question_id"].lower())}" aria-label="{h(row["question_id"])}{label}">{label} ↗</a>' for edition, label in (('teacher', '教师版'), ('student', '学生版')))
                 examples.append(f'<li><div><b>{h(row["question_id"])}</b><span>{h(row["focus"])}</span></div><nav aria-label="{h(row["question_id"])}版本选择">{routes}</nav></li>')
             example_html = ('<section class="knowledge-examples"><h3>公开例训 · 对应动作</h3><p>只对应下列动作，不代表本知识点或题型已完整覆盖。</p><ul>' + ''.join(examples) + '</ul></section>') if examples else ''
             chapter_links = ''.join(f'<a href="index.html?catalog={h(c)}#catalogue">{h(c)}</a>' for c in card['chapters'])
@@ -66,4 +66,4 @@ def page(data, catalog, markdown, brand, example_links=(), demo_id='DEMO-01'):
 <main class="knowledge-main"><div class="knowledge-breadcrumb"><a href="index.html">全书</a> / 编者知识速查</div><header class="knowledge-intro"><span class="eyebrow">FORMULA · RECOGNITION · BOUNDARY</span><h1>记住公式，<em>更要看清条件。</em></h1><p>{len(data['cards'])} 张已复核知识卡。用一句话认出问题，再核对公式与易错边界。题库原题未公开；部分知识卡附有自编公开例训，可直达师生版。</p><div class="knowledge-summary"><span><b>{len(groups):02}</b> 个板块</span><span><b>{len(data['cards']):02}</b> 张速查卡</span><span>按需展开 · 本地公式资源</span></div></header>
 <section class="knowledge-tools" aria-label="筛选知识卡"><label for="knowledge-query">找知识、公式或易错点<input id="knowledge-query" type="search" placeholder="例如：负公比、共轭、向量 夹角" autocomplete="off"></label><label for="knowledge-volume">知识板块<select id="knowledge-volume"><option value="">全部板块</option>{options}</select></label><button id="knowledge-clear" type="button">清除筛选</button><p id="knowledge-count" role="status" aria-live="polite">{len(data['cards'])} 张知识卡</p></section>
 <noscript><p>筛选和公式排版需要启用JavaScript；卡片文本仍可展开阅读。</p></noscript><div class="knowledge-content">{''.join(sections)}</div><p id="knowledge-empty" hidden>没有匹配的知识卡。试试缩短关键词；未命中不代表数学上没有这个知识点。</p>
-<footer class="knowledge-footer"><p>{h(data['notice'])}</p><a href="#top">回到顶部 ↑</a><a href="chapters/DEMO-01-teacher.html">试读基本不等式演示 ↗</a></footer></main></div></body></html>'''
+<footer class="knowledge-footer"><p>{h(data['notice'])}</p><a href="#top">回到顶部 ↑</a><a href="index.html#public-lessons">按板块阅读公开例训 ↗</a></footer></main></div></body></html>'''

@@ -16,15 +16,15 @@ const {chromium} = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
       const errors = [];
       page.on('pageerror', error => errors.push(String(error)));
       await page.goto(new URL('knowledge.html', base).href);
-      assert.equal(await page.locator('.knowledge-examples').count(), 2);
-      assert.equal(await page.locator('.knowledge-examples li').count(), 7);
+      assert.equal(await page.locator('.knowledge-examples').count(), new Set(links.map(row => row.card_id)).size);
+      assert.equal(await page.locator('.knowledge-examples li').count(), links.length);
       assert.equal(await page.evaluate(() => typeof window.katex), 'undefined');
       for (const row of links) {
         for (const edition of ['teacher', 'student']) {
           await page.goto(new URL(`knowledge.html#${row.card_id}`, base).href);
           const card = page.locator(`#${row.card_id}`);
           await page.waitForFunction(id => document.getElementById(id).open, row.card_id);
-          const route = `chapters/DEMO-01-${edition}.html#${row.question_id.toLowerCase()}`;
+          const route = `chapters/${row.chapter_id}-${edition}.html#${row.question_id.toLowerCase()}`;
           await card.locator(`.knowledge-examples a[href="${route}"]`).click();
           await page.waitForURL(url => url.href.endsWith(route));
           const question = page.locator(`#${row.question_id.toLowerCase()}`);

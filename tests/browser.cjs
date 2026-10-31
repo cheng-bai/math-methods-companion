@@ -41,6 +41,9 @@ async function main() {
   checkMathematics();
   const demo = JSON.parse(await fs.readFile(path.join(root, 'content/demo.json'), 'utf8'));
   const questionCount = demo.questions.length;
+  const publications = await Promise.all(['demo.json','functions.json','sequences.json'].map(async name => JSON.parse(await fs.readFile(path.join(root,'content',name),'utf8'))));
+  const allQuestions = publications.flatMap(chapter => chapter.questions.map(q => ({...q, chapter:chapter.id})));
+  const publicCount = allQuestions.length;
   const browser = await chromium.launch({headless:true,
     ...(process.env.CHROMIUM_PATH ? {executablePath:process.env.CHROMIUM_PATH} : {})});
   const bases=[{name:'file',url:pathToFileURL(dist+path.sep).href}];
@@ -102,13 +105,13 @@ async function main() {
       assert.equal(await page.locator('#catalog-query').evaluate(n=>document.activeElement===n),true);
       await page.locator('#catalog-query').fill('B09');
       await page.click('#search-all');
-      await page.waitForFunction(count=>document.querySelectorAll('.search-result').length===count,Math.min(questionCount,30));
+      await page.waitForFunction(count=>document.querySelectorAll('.search-result').length===count,Math.min(publicCount,30));
       assert.equal(await page.locator('.public-catalog-item:visible').count(),3,'演示检索不应重置目录筛选');
       assert.equal(await page.locator('.public-catalog-item a').count(),0);
       const index=await page.evaluate(()=>window.BOOK_SEARCH_INDEX);
-      assert.equal(index.length,questionCount);
-      assert.deepEqual(index.map(q=>q.id),demo.questions.map(q=>q.id));
-      assert.ok(index.every(q=>q.chapter==='DEMO-01' && !('answer' in q) && !('solution' in q)));
+      assert.equal(index.length,publicCount);
+      assert.deepEqual(index.map(q=>[q.chapter,q.id]),allQuestions.map(q=>[q.chapter,q.id]));
+      assert.ok(index.every(q=>publications.some(c=>c.id===q.chapter) && !('answer' in q) && !('solution' in q)));
       for(const edition of ['teacher','student']) for(const question of expected) {
         await goto(`index.html?q=${question.id}&e=${edition}`);
         await page.waitForFunction(()=>document.querySelectorAll('.search-result').length===1);

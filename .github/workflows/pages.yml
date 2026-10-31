@@ -37,6 +37,10 @@ jobs:
         run: |
           python3 tests/example_links.py
           node tests/example_links.cjs
+      - name: Check Multiple Public Lessons
+        run: |
+          python3 tests/publications.py
+          node tests/publications.cjs
       - name: Check Browser Interaction
         run: node tests/browser.cjs
       - name: Check Original Exercise Pairs

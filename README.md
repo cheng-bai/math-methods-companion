@@ -9,7 +9,7 @@
 
 - 12个板块、45讲的目录元数据，清楚显示当前主题在全书的位置。
 - 目录可按章节编号、标题和板块多词筛选；这与仅检索自编题的演示搜索分开，目录项仍不提供未公开正文。
-- 基本不等式的5道自编教学演示与迁移训练，提供教师、学生两版；定和加权倒数和平移分母各有一组同方法例训，可直接互跳。
+- 三个板块共13道自编例训，提供教师、学生两版：基本不等式5题、函数4题、数列4题；共6对同型例训可互跳，另有1道独立演示。函数含区间最值与计根，数列含参数递推与裂项求和。
 - [226张编者知识速查](https://cheng-bai.github.io/math-methods-companion/knowledge.html)：按12板块、80个教材节主题组织，支持主题跳转、板块/多词筛选、卡片直达与相关讲目录定位。知识卡对应既有登记入口，含合并标题和编者细化标签；不代表课程知识、题型或配套练习已完整覆盖。
 - 可展开的细题型导航、题号直达、题型回跳、搜索和版本切换。
 - 本地 KaTeX 公式与字体，无 CDN 运行依赖；可离线直接打开 `dist/index.html`。
@@ -30,14 +30,16 @@ python3 scripts/build.py
 python3 -m http.server 8000 --bind 127.0.0.1 --directory dist
 ```
 
-输入为三份公开内容与一份显式关联清单；目录、知识卡和关联采用白名单字段，不从私人书稿目录自动复制：
+公开输入显式列出；目录、知识卡、例训及其关联均有字段白名单，不从私人书稿目录自动复制。新增公开讲须登记到 `scripts/publications.py`，不自动发现目录里的其他文件：
 
 | 文件 | 用途 |
 | --- | --- |
 | `content/catalog.json` | 章节编号、标题、板块三个字段，不能放入原题正文或来源路径 |
-| `content/demo.json` | 自编演示的题干、答案、解析、取等检查、方法笔记与细题型 |
+| `content/demo.json` | 基本不等式自编例训，保持DEMO-01原路径及旧锚点 |
+| `content/functions.json` | 函数自编例训DEMO-02，完整条件、答案、证明与边界检查 |
+| `content/sequences.json` | 数列自编例训DEMO-06，递推、求和及参数边界 |
 | `content/knowledge.json` | 已复核的编者知识概括及目录位置，不含原题、原图、源文件路径或本地回源账本 |
-| `content/example-links.json` | 已复核的知识卡与公开题关联，仅卡ID、题ID、对应动作 |
+| `content/example-links.json` | 已复核的知识卡与公开题关联，仅卡ID、讲ID、题ID、对应动作 |
 | `assets/` | 阅读样式、交互与本地 KaTeX；不含私人题图 |
 | `scripts/build.py` | 静态生成与链接、锚点、学生答案隔离检查 |
 | `tests/browser.cjs` | 桌面／手机浏览器交互测试 |
@@ -54,7 +56,7 @@ python3 -m http.server 8000 --bind 127.0.0.1 --directory dist
 题型按 `type_family`、`type_title` 两级归组：同一大类下标题相同的题目并入同一细题型，
 不同大类中即使标题相同也分别归类。每道题的「题型入口」指向所属细题型，细题型列出所有对应题号。
 同一细题型须共享同一个 `type_id`，不同题型不能复用 ID；`type_note` 应保持一致，展示时采用该组第一题的说明。
-题型锚点由 `type_id` 生成，不随排序变化；变更标题时保留原 ID。题号使用 Q 加数字，大小写归一后必须唯一。
+题型锚点由 `type_id` 生成，不随排序变化；变更标题时保留原 ID。题号使用 Q 加数字，大小写归一后须在本讲内唯一；跨讲关联始终使用讲ID与题ID组成身份，不能仅凭题号猜测目标。
 已公开的数字题型旧锚点通过 `legacy_type_anchors` 持续映射，删除或重命名类型时须先处理已有链接。
 
 浏览器测试需要 Node.js 20+（CI 使用22），是开发依赖，不会发送到读者端：
@@ -64,6 +66,11 @@ npm ci
 npx playwright install chromium
 python3 scripts/build.py
 python3 tests/grouping.py
+python3 tests/publications.py
+python3 tests/example_links.py
+node tests/publications.cjs
+node tests/example_links.cjs
+node tests/extensions.cjs
 node tests/browser.cjs
 node tests/knowledge.cjs
 # 对线上版本运行相同交互检查：
@@ -99,6 +106,6 @@ PUBLIC_BASE_URL=https://cheng-bai.github.io/math-methods-companion/ node tests/k
 
 ### 知识卡与例训双向导航
 
-`content/example-links.json` 单独记录已复核的卡ID、题ID和对应动作，不依据关键词自动配题，不接受外部URL或私有路径字段。当前7条关联连接2张知识卡和5道自编例训；其中“不等式的性质”只关联作差判号子动作，不代表知识点覆盖。知识卡可直达教师版或学生版，题目可返回知识卡。学生版保留方法提示，不含答案解析。
+`content/example-links.json` 单独记录已复核的卡ID、讲ID、题ID和对应动作，不依据关键词自动配题，不接受外部URL或私有路径字段。当前16条关联连接8张知识卡和12道自编例训；其中“不等式的性质”只关联作差判号子动作，不代表知识点覆盖。裂项题Q204暂无直接知识卡，不硬贴到等差等比求和；知识卡无关联并不等于该题没有方法。知识卡可直达教师版或学生版，题目可返回知识卡。学生版保留方法提示，不含答案解析。
 
 新增验证：`python3 tests/example_links.py`、`node tests/example_links.cjs`（支持 `PUBLIC_BASE_URL` 线上复测）。导航为静态链接，不增加网络依赖；无JavaScript时可手动展开卡片后跳转，公式排版仍需JavaScript。
