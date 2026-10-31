@@ -57,6 +57,7 @@ function samples(){
         assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
         if(edition==='teacher'){
           await card.locator('.solution>summary').click();
+          await page.evaluate(async()=>{await document.fonts.ready;await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));});
           assert.ok((await card.locator('.solution').textContent()).includes('条件与边界检查'));
           const oversized = await card.locator('.math').evaluateAll(nodes=>nodes.filter(n=>n.scrollWidth>n.clientWidth+1).map(n=>({width:n.scrollWidth,available:n.clientWidth,tex:n.querySelector('annotation')?.textContent,css: getComputedStyle(n).display})));
           assert.deepEqual(oversized,[],`${width} ${edition} ${q.id}: 公式不能依赖横向滚动`);
