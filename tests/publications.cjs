@@ -58,7 +58,8 @@ function samples(){
         if(edition==='teacher'){
           await card.locator('.solution>summary').click();
           assert.ok((await card.locator('.solution').textContent()).includes('条件与边界检查'));
-          assert.equal(await card.locator('.math').evaluateAll(nodes=>nodes.filter(n=>n.scrollWidth>n.clientWidth+1).length),0,'新增例训公式不应依赖横向滚动');
+          const oversized = await card.locator('.math').evaluateAll(nodes=>nodes.filter(n=>n.scrollWidth>n.clientWidth+1).map(n=>({width:n.scrollWidth,available:n.clientWidth,tex:n.querySelector('annotation')?.textContent,css: getComputedStyle(n).display})));
+          assert.deepEqual(oversized,[],`${width} ${edition} ${q.id}: 公式不能依赖横向滚动`);
           assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
           if(process.env.SCREENSHOT_DIR&&['Q102','Q202','Q204'].includes(q.id)){
             await fs.mkdir(process.env.SCREENSHOT_DIR,{recursive:true});await card.locator('h4').scrollIntoViewIfNeeded();
