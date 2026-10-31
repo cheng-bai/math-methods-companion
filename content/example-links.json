@@ -1,0 +1,9 @@
+[
+  {"card_id":"k-3b22fa72","question_id":"Q01","focus":"和固定、倒数带系数：乘回定和，用平方非负求下界"},
+  {"card_id":"k-3b22fa72","question_id":"Q02","focus":"分母有平移：换成正数，再用基本不等式"},
+  {"card_id":"k-3b22fa72","question_id":"Q03","focus":"积固定、含平方和：先设两数和，找出它的范围"},
+  {"card_id":"k-3b22fa72","question_id":"Q04","focus":"多了一条比例限制：先查原来的取等点还能不能用"},
+  {"card_id":"k-3b22fa72","question_id":"Q05","focus":"区间端点取不取：分清下界与能取到的最小值"},
+  {"card_id":"k-2889c7de","question_id":"Q04","focus":"只练其中一步：与边界值作差，利用因子符号比较大小"},
+  {"card_id":"k-2889c7de","question_id":"Q05","focus":"只练其中一步：与端点值作差，判断不等号是否严格"}
+]

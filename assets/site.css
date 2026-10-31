@@ -15,3 +15,5 @@
 .home-cards .map-status{justify-self:start;font:11px/1.5 var(--sans);font-style:normal;color:#385f4d;background:#e7f2e8;padding:2px 7px}.home-cards .map-status.draft{color:#80694a;background:#f8f0df}
 
 .knowledge-entry{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:17px 20px;background:#edf5ee;border:1px solid #c4dacc;color:var(--forest);font:14px/1.5 var(--sans)}.knowledge-entry span{display:grid;gap:3px}.knowledge-entry small{font:12px/1.5 var(--sans);color:var(--muted)}.knowledge-entry strong{font:22px Georgia,serif;color:var(--teal)}.knowledge-entry:hover,.knowledge-entry:focus-visible{background:#e0f0e5;border-color:var(--teal)}
+
+.question-knowledge{display:grid;gap:5px;margin:12px 0 18px;padding-left:12px;border-left:2px solid var(--teal);font:12px/1.8 var(--sans);color:var(--muted)}.question-knowledge strong{font-size:11px}.book-content .question-knowledge a{color:var(--teal);text-underline-offset:3px;justify-self:start}.question-knowledge span{overflow-wrap:anywhere}

@@ -95,3 +95,9 @@ PUBLIC_BASE_URL=https://cheng-bai.github.io/math-methods-companion/ node tests/k
 调用 `window.BookMath.renderAll()` 可强制渲染全部公式；还须核对
 `BookMath.rendered === BookMath.total` **且** `BookMath.errors.length === 0`。
 打印前会补齐公式，但保持当前解析折叠状态；需要答案时先点「展开全部解析」。
+
+### 知识卡与例训双向导航
+
+`content/example-links.json` 单独记录已复核的卡ID、题ID和对应动作，不依据关键词自动配题，不接受外部URL或私有路径字段。当前7条关联连接2张知识卡和5道自编例训；其中“不等式的性质”只关联作差判号子动作，不代表知识点覆盖。知识卡可直达教师版或学生版，题目可返回知识卡。学生版保留方法提示，不含答案解析。
+
+新增验证：`python3 tests/example_links.py`、`node tests/example_links.cjs`（支持 `PUBLIC_BASE_URL` 线上复测）。导航为静态链接，不增加网络依赖；无JavaScript时可手动展开卡片后跳转，公式排版仍需JavaScript。

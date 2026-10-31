@@ -11,6 +11,7 @@ import re
 import shutil
 import subprocess
 from knowledge import page as knowledge_page, validate as validate_knowledge
+from example_links import validate as validate_example_links
 
 ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_CSS = '''.public-catalog-item{display:grid;gap:6px;background:var(--sheet);padding:16px;border:1px solid var(--line);font:13px/1.5 var(--sans)}.public-catalog-item[hidden],.catalog-volume[hidden]{display:none}.public-catalog-item b{font:12px Georgia,serif;color:var(--teal)}.public-catalog-item small{font:11px var(--sans);color:var(--muted)}.chapter-link small{display:block;color:var(--muted);font-size:10px}.catalog-filter{display:flex;flex-wrap:wrap;gap:8px;align-items:end;font:13px/1.5 var(--sans)}.catalog-filter label{display:grid;gap:5px;flex:1 1 250px}.catalog-filter input{width:100%;height:40px;padding:0 10px;border:1px solid #aabfb3;background:var(--sheet);color:var(--ink)}.catalog-filter button{height:40px;padding:0 14px;border:1px solid #aabfb3;background:#eef5ec;color:var(--forest)}.catalog-status{margin:8px 0 16px;color:var(--muted);font:12px/1.5 var(--sans)}'''
@@ -58,7 +59,7 @@ def sidebar(catalog, demo, edition):
     return ''.join(parts)
 
 
-def question_card(q, type_anchor, edition, related_ids=()):
+def question_card(q, type_anchor, edition, related_ids=(), knowledge_links=()):
     anchor = q['id'].lower()
     stem = markdown(q['stem'])
     solution = ''
@@ -71,9 +72,11 @@ def question_card(q, type_anchor, edition, related_ids=()):
     search = h(q['id'] + ' ' + q['title'] + ' ' + q['stem'])
     related = ''.join(f'<a href="#{h(qid.lower())}">{h(qid)}</a>' for qid in related_ids if qid != q['id'])
     related_nav = f'<nav class="question-related" aria-label="同题型例训"><span>同题型：</span>{related}</nav>' if related else ''
+    back_links = ''.join(f'<a href="../knowledge.html#{h(row["card_id"])}">{h(row["title"].replace("$", ""))} ↗</a><span>{h(row["focus"])}</span>' for row in knowledge_links)
+    back_nav = f'<nav class="question-knowledge" aria-label="对应知识卡"><strong>回看知识 · 本题对应动作</strong>{back_links}</nav>' if back_links else ''
     return (f'<section class="question" id="{anchor}" data-role="{h(q.get("role", "自编演示"))}" data-difficulty="未标定" data-search="{search.lower()}">'
             f'<h4>{h(q["id"])}　{title}</h4><div class="question-context"><a class="question-type-link" href="#{type_anchor}">'
-            f'题型入口：{h(q["type_title"])}</a>{related_nav}</div>{stem}<p class="source-line">{h(q.get("role", "自编演示"))} · 未作难度标定</p>{solution}</section>')
+            f'题型入口：{h(q["type_title"])}</a>{related_nav}</div>{stem}<p class="source-line">{h(q.get("role", "自编演示"))} · 未作难度标定</p>{back_nav}{solution}</section>')
 
 
 def validate_demo(demo):
@@ -98,13 +101,14 @@ def validate_demo(demo):
             raise ValueError(f'旧题型锚点映射无效: {legacy} -> {type_id}')
 
 
-def chapter_page(catalog, demo, edition):
+def chapter_page(catalog, demo, edition, example_links=(), knowledge=None):
     teacher = edition == 'teacher'
     label = '教师版' if teacher else '学生版'
     other = 'student' if teacher else 'teacher'
     other_label = '学生版' if teacher else '教师版'
     validate_demo(demo)
     qs = demo['questions']
+    card_titles = {c['id']: c['title'] for c in knowledge['cards']} if knowledge else {}
     # Keep the first appearance order; a fine type is scoped to its family.
     families = OrderedDict()
     for q in qs:
@@ -127,7 +131,8 @@ def chapter_page(catalog, demo, edition):
                           f'<div class="family-body">{"".join(type_html)}</div></details>')
     groups = ''.join(group_html)
     cards = ''.join(question_card(q, anchors[q['id']], edition,
-                                 [other['id'] for other in qs if other['type_id'] == q['type_id']]) for q in qs)
+                                 [other['id'] for other in qs if other['type_id'] == q['type_id']],
+                                 [row | {'title': card_titles[row['card_id']]} for row in example_links if row['question_id'] == q['id']]) for q in qs)
     toggler = '<button type="button" class="toggle-solutions" aria-pressed="false">展开全部解析</button>' if teacher else ''
     questions = ''.join(f'<a href="#{q["id"].lower()}">{h(q["id"])}</a>' for q in qs)
     volume_count = len({c['volume'] for c in catalog})
@@ -232,10 +237,12 @@ def main():
     catalog = json.loads((ROOT / 'content/catalog.json').read_text())
     demo = json.loads((ROOT / 'content/demo.json').read_text())
     knowledge = json.loads((ROOT / 'content/knowledge.json').read_text())
+    example_links = json.loads((ROOT / 'content/example-links.json').read_text())
     assert all(set(c) == {'id', 'title', 'volume'} for c in catalog), '目录仅允许三项元数据'
     assert len({c['id'] for c in catalog}) == len(catalog)
     validate_demo(demo)
     validate_knowledge(knowledge, catalog)
+    validate_example_links(example_links, knowledge, demo)
     output = args.output.resolve()
     (output / 'chapters').mkdir(parents=True, exist_ok=True)
     (output / 'assets').mkdir(exist_ok=True)
@@ -248,9 +255,9 @@ def main():
     if (ROOT / 'assets/katex').is_dir():
         shutil.copytree(ROOT / 'assets/katex', output / 'assets/katex', dirs_exist_ok=True)
     for edition in ('teacher', 'student'):
-        (output / 'chapters' / f'{demo["id"]}-{edition}.html').write_text(chapter_page(catalog, demo, edition))
+        (output / 'chapters' / f'{demo["id"]}-{edition}.html').write_text(chapter_page(catalog, demo, edition, example_links, knowledge))
     (output / 'index.html').write_text(homepage(catalog, demo, knowledge))
-    (output / 'knowledge.html').write_text(knowledge_page(knowledge, catalog, markdown, brand))
+    (output / 'knowledge.html').write_text(knowledge_page(knowledge, catalog, markdown, brand, example_links, demo['id']))
     (output / 'assets/public.css').write_text(PUBLIC_CSS)
     index = []
     for q in demo['questions']:
