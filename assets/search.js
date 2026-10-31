@@ -14,6 +14,13 @@ const pageSize=30;
 let loading, serial=0, page=0, found=[], timer, browsing=false;
 let searchable;
 const initial=new URLSearchParams(location.search);
+const catalogQuery=document.querySelector('#catalog-query');
+const catalogStatus=document.querySelector('#catalog-status');
+const catalogVolumes=[...document.querySelectorAll('.catalog-volume')];
+const catalogItems=catalogVolumes.flatMap(section=>[...section.querySelectorAll('.public-catalog-item')].map(item=>({
+  item, section, text:(section.querySelector('h2').textContent+' '+item.querySelector('b').textContent+' '+item.querySelector('span').textContent).toLocaleLowerCase()
+})));
+catalogQuery.value=initial.get('catalog') || '';
 input.value=initial.get('q') || '';
 for(const [control,key] of [[volume,'v'],[role,'r'],[difficulty,'d'],[edition,'e']]) {
   const value=initial.get(key);
@@ -21,13 +28,26 @@ for(const [control,key] of [[volume,'v'],[role,'r'],[difficulty,'d'],[edition,'e
 }
 browsing=initial.get('all')==='1';
 const initialPage=/^\d+$/.test(initial.get('page') || '') ? Math.max(0,Number(initial.get('page'))-1) : 0;
+page=initialPage;
 function remember(){
   const url=new URL(location.href);
   const values={q:input.value.trim(),v:volume.value,r:role.value,d:difficulty.value,
-    e:edition.value==='teacher'?'':edition.value,all:browsing?'1':'',page:page>0?String(page+1):''};
+    e:edition.value==='teacher'?'':edition.value,all:browsing?'1':'',page:page>0?String(page+1):'',
+    catalog:catalogQuery.value.trim()};
   for(const [key,value] of Object.entries(values)) value ? url.searchParams.set(key,value) : url.searchParams.delete(key);
   history.replaceState(null,'',url);
 }
+function filterCatalog(updateUrl=true){
+  const words=catalogQuery.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+  let count=0;
+  for(const {item,text} of catalogItems){item.hidden=!words.every(word=>text.includes(word));if(!item.hidden)count++;}
+  for(const section of catalogVolumes) section.hidden=![...section.querySelectorAll('.public-catalog-item')].some(item=>!item.hidden);
+  catalogStatus.textContent=`显示 ${count} / ${catalogItems.length} 讲目录；正文暂未公开。`;
+  if(updateUrl) remember();
+}
+catalogQuery.addEventListener('input',()=>filterCatalog());
+document.querySelector('#catalog-clear').addEventListener('click',()=>{catalogQuery.value='';filterCatalog();catalogQuery.focus();});
+filterCatalog(false);
 function loadIndex(){
   if(!loading) loading=new Promise((resolve,reject)=>{
     const script=document.createElement('script'); script.src='assets/search-index.js';

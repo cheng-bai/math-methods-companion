@@ -12,7 +12,7 @@ import shutil
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
-PUBLIC_CSS = '''.public-catalog-item{display:grid;gap:6px;background:var(--sheet);padding:16px;border:1px solid var(--line);font:13px/1.5 var(--sans)}.public-catalog-item b{font:12px Georgia,serif;color:var(--teal)}.public-catalog-item small{font:11px var(--sans);color:var(--muted)}.chapter-link small{display:block;color:var(--muted);font-size:10px}'''
+PUBLIC_CSS = '''.public-catalog-item{display:grid;gap:6px;background:var(--sheet);padding:16px;border:1px solid var(--line);font:13px/1.5 var(--sans)}.public-catalog-item[hidden],.catalog-volume[hidden]{display:none}.public-catalog-item b{font:12px Georgia,serif;color:var(--teal)}.public-catalog-item small{font:11px var(--sans);color:var(--muted)}.chapter-link small{display:block;color:var(--muted);font-size:10px}.catalog-filter{display:flex;flex-wrap:wrap;gap:8px;align-items:end;font:13px/1.5 var(--sans)}.catalog-filter label{display:grid;gap:5px;flex:1 1 250px}.catalog-filter input{width:100%;height:40px;padding:0 10px;border:1px solid #aabfb3;background:var(--sheet);color:var(--ink)}.catalog-filter button{height:40px;padding:0 14px;border:1px solid #aabfb3;background:#eef5ec;color:var(--forest)}.catalog-status{margin:8px 0 16px;color:var(--muted);font:12px/1.5 var(--sans)}'''
 
 
 def h(value):
@@ -145,12 +145,12 @@ def homepage(catalog, demo):
     sections = []
     for volume, chapters in volumes.items():
         cards = ''.join(f'<div class="public-catalog-item"><b>{h(c["id"])}</b><span>{h(c["title"])}</span><small>正文暂未公开</small></div>' for c in chapters)
-        sections.append(f'<section class="home-volume"><h2>{h(volume)}</h2><div class="home-cards">{cards}</div></section>')
+        sections.append(f'<section class="home-volume catalog-volume"><h2>{h(volume)}</h2><div class="home-cards">{cards}</div></section>')
     volume_options = ''.join(f'<option value="{h(v)}">{h(v)}</option>' for v in volumes)
     return head('高中数学解析字典 · 公开演示') + f'''<body><header class="topbar">{brand()}<span class="edition">便携公开演示</span></header><main class="home"><section class="home-intro"><span class="eyebrow">A MATHEMATICS COMPANION</span><h1>高中数学<br>解析字典</h1><p>从条件出发，找到方法，检查边界。这里展示阅读器、完整目录元数据和自编教学演示；不包含私人题库正文或原题图。</p><div class="home-stats"><span><b>{len(volumes)}</b> 个板块</span><span><b>{len(catalog)}</b> 讲目录</span><span><b>{len(demo['questions'])}</b> 道公开演示</span></div></section><p class="home-notice">目录是全书位置提示，不是知识覆盖证明。以下原有章节正文暂未公开；只有单列的{len(demo['questions'])}道自编演示可阅读，未作难度标定。</p>
 <section class="home-volume"><h2>先读一个公开演示</h2><div class="home-cards"><a href="chapters/{demo['id']}-teacher.html"><b>教师版</b><span>{h(demo['title'])}</span><small>{len(demo['questions'])}道自编演示 · 含答案、关键理由与取等检查</small></a><a href="chapters/{demo['id']}-student.html"><b>学生版</b><span>{h(demo['title'])}</span><small>只含题目及方法导航 · 不含解析</small></a></div></section>
 <section class="global-search" aria-label="公开演示检索"><span class="eyebrow">SEARCH THE DEMOS</span><h2>查找公开演示</h2><label for="global-query">这里只检索{len(demo['questions'])}道自编教学演示，不检索未公开正文</label><input type="search" id="global-query" placeholder="例如：定和、分母、Q01" autocomplete="off"><div class="search-controls"><label>板块<select id="search-volume"><option value="">全部板块</option>{volume_options}</select></label><label>类型<select id="search-role"><option value="">全部类型</option><option>自编演示</option></select></label><label>难度<select id="search-difficulty"><option value="">全部难度</option><option>未标定</option></select></label><label>跳转版本<select id="search-edition"><option value="teacher">教师版</option><option value="student">学生版</option></select></label><button type="button" id="search-all">浏览全部演示</button></div><p id="search-status" aria-live="polite">输入关键词或选择条件检索；也可浏览全部演示。</p><div id="search-results"></div><div class="search-pagination" hidden><button type="button" id="search-prev">上一页</button><span id="search-page"></span><button type="button" id="search-next">下一页</button></div></section>
-<div class="home-heading"><div><span class="eyebrow">CATALOG ONLY</span><h2>全书位置与知识架构</h2></div><p>{len(volumes)}板块 / {len(catalog)}讲目录 · 非正文公开清单</p></div>{''.join(sections)}</main></body></html>'''
+<div class="home-heading"><div><span class="eyebrow">CATALOG ONLY</span><h2>全书位置与知识架构</h2></div><p>{len(volumes)}板块 / {len(catalog)}讲目录 · 非正文公开清单</p></div><div class="catalog-filter"><label for="catalog-query">筛选目录（章节编号、名称或板块；空格分词）<input type="search" id="catalog-query" placeholder="例如：B09 复数" autocomplete="off"></label><button type="button" id="catalog-clear">清除目录筛选</button></div><p class="catalog-status" id="catalog-status" role="status">显示全部 {len(catalog)} 讲目录；正文暂未公开。</p>{''.join(sections)}</main></body></html>'''
 
 
 class References(HTMLParser):

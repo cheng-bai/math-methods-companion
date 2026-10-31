@@ -84,8 +84,27 @@ async function main() {
       assert.equal(await page.locator('.public-catalog-item').filter({hasText:'正文暂未公开'}).count(),45);
       assert.equal(await page.locator('.home-volume').filter({has:page.locator('.public-catalog-item')}).count(),12);
       await noOverflow(); await linksWork(); await shot('home');
+      await page.locator('#catalog-query').fill('b09 三角');
+      assert.equal(await page.locator('.public-catalog-item:visible').count(),1);
+      assert.match(await page.locator('.public-catalog-item:visible').innerText(),/B09-03/);
+      assert.match(await page.locator('#catalog-status').innerText(),/显示 1 \/ 45.*正文暂未公开/);
+      assert.equal(await page.evaluate(()=>typeof window.BOOK_SEARCH_INDEX),'undefined','目录筛选不应加载演示索引');
+      await page.reload();
+      assert.equal(await page.locator('#catalog-query').inputValue(),'b09 三角');
+      assert.equal(await page.locator('.public-catalog-item:visible').count(),1);
+      await page.locator('#catalog-query').fill('找不到的目录xyz');
+      assert.equal(await page.locator('.public-catalog-item:visible').count(),0);
+      assert.match(await page.locator('#catalog-status').innerText(),/显示 0 \/ 45/);
+      await page.locator('#catalog-query').fill('正文暂未公开');
+      assert.equal(await page.locator('.public-catalog-item:visible').count(),0,'状态文字不是目录检索字段');
+      await page.click('#catalog-clear');
+      assert.equal(await page.locator('.public-catalog-item:visible').count(),45);
+      assert.equal(await page.locator('#catalog-query').evaluate(n=>document.activeElement===n),true);
+      await page.locator('#catalog-query').fill('B09');
       await page.click('#search-all');
       await page.waitForFunction(count=>document.querySelectorAll('.search-result').length===count,Math.min(questionCount,30));
+      assert.equal(await page.locator('.public-catalog-item:visible').count(),3,'演示检索不应重置目录筛选');
+      assert.equal(await page.locator('.public-catalog-item a').count(),0);
       const index=await page.evaluate(()=>window.BOOK_SEARCH_INDEX);
       assert.equal(index.length,questionCount);
       assert.deepEqual(index.map(q=>q.id),demo.questions.map(q=>q.id));
@@ -166,6 +185,14 @@ async function main() {
         typeRoundTrips:expected.length*2,lazyMath:initialMath,mathErrors:0,studentSolutions:0,pageOverflow:false,
         scrollableLongFormulas:scrollFormulas.length,brokenLinks:0});
       await page.close();
+      const offlineIndex=await browser.newPage({viewport:{width,height:900}});
+      await offlineIndex.route('**/assets/search-index.js',route=>route.abort());
+      await offlineIndex.goto(new URL('index.html?all=1&page=2&catalog=B09',base.url).href);
+      await offlineIndex.waitForFunction(()=>document.querySelector('#search-status').textContent.includes('加载失败'));
+      assert.equal(new URL(offlineIndex.url()).searchParams.get('page'),'2');
+      await offlineIndex.locator('#catalog-query').fill('B09 复数');
+      assert.equal(new URL(offlineIndex.url()).searchParams.get('page'),'2','目录筛选不应丢掉等待中或失败的演示分页');
+      await offlineIndex.close();
     }
   } finally {await browser.close();}
   const report={passed:true,algebraAndEqualityIndependentlyReviewed:true,records};
