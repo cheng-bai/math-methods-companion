@@ -10,9 +10,11 @@
 - 12个板块、45讲的目录元数据，清楚显示当前主题在全书的位置。
 - 目录可按章节编号、标题和板块多词筛选；这与仅检索自编题的演示搜索分开，目录项仍不提供未公开正文。
 - 基本不等式的自编教学演示，提供教师、学生两版。
+- [31张编者知识速查](https://cheng-bai.github.io/math-methods-companion/knowledge.html)：函数11张、平面向量5张、数列4张、复数11张；支持板块/多词筛选、卡片直达与相关讲目录定位。
 - 可展开的细题型导航、题号直达、题型回跳、搜索和版本切换。
 - 本地 KaTeX 公式与字体，无 CDN 运行依赖；可离线直接打开 `dist/index.html`。
 - 解析按需渲染，首次阅读不生成闭合解析的全部公式；索引首次检索才加载。
+- 知识卡首次展开才加载本地公式引擎和字体；关闭的卡片不排版。资源加载失败可重新展开重试，禁用JavaScript时仍可读文字与公式源码。
 
 **45讲正文没有在这个仓库公开。**目录项明确标记「正文暂未公开」，没有虚假的可读链接。
 示例仅用于体验阅读器，不构成中偏难练习集、完整题型体系或考试要求。
@@ -28,15 +30,17 @@ python3 scripts/build.py
 python3 -m http.server 8000 --bind 127.0.0.1 --directory dist
 ```
 
-输入只有两份明确的公开内容：
+输入只有三份明确的公开内容，采用白名单字段；不从私人书稿目录自动复制：
 
 | 文件 | 用途 |
 | --- | --- |
 | `content/catalog.json` | 章节编号、标题、板块三个字段，不能放入原题正文或来源路径 |
 | `content/demo.json` | 自编演示的题干、答案、解析、取等检查、方法笔记与细题型 |
+| `content/knowledge.json` | 已复核的编者知识概括及目录位置，不含原题、原图、源文件路径或本地回源账本 |
 | `assets/` | 阅读样式、交互与本地 KaTeX；不含私人题图 |
 | `scripts/build.py` | 静态生成与链接、锚点、学生答案隔离检查 |
 | `tests/browser.cjs` | 桌面／手机浏览器交互测试 |
+| `tests/knowledge.cjs` | 知识卡筛选、深链接、按需公式、加载失败重试及无JS阅读测试 |
 
 数学源码用标准 LaTeX，行内 `$...$`，独立公式 `$$...$$`。分数使用 `\frac` 或 `\dfrac`，
 不要把斜线分数的自动猜测替换当作数学审校。修改示例后，应重新核算答案与达到性。
@@ -56,8 +60,10 @@ npx playwright install chromium
 python3 scripts/build.py
 python3 tests/grouping.py
 node tests/browser.cjs
+node tests/knowledge.cjs
 # 对线上版本运行相同交互检查：
 PUBLIC_BASE_URL=https://cheng-bai.github.io/math-methods-companion/ node tests/browser.cjs
+PUBLIC_BASE_URL=https://cheng-bai.github.io/math-methods-companion/ node tests/knowledge.cjs
 ```
 
 已有本机浏览器时可设 `CHROMIUM_PATH`，已有 Playwright 包时可设 `PLAYWRIGHT_MODULE`，不必重复安装。
@@ -71,12 +77,13 @@ PUBLIC_BASE_URL=https://cheng-bai.github.io/math-methods-companion/ node tests/b
 
 ## 授权与隐私边界
 
-- 本仓库作者代码、自编教学演示与目录元数据按 MIT 许可证提供。
+- 本仓库作者代码、自编教学演示、编者知识卡与目录元数据按 MIT 许可证提供。
 - KaTeX 0.16.47 及其字体保留上游许可证，见 `assets/katex/LICENSE` 和 `THIRD_PARTY.md`。
 - 私人版的原题、原图、学生资料、来源文件、本机路径、映射账本和归档 PDF **均不在公开输入中**。
 - 开源代码的许可证不赋予第三方原题或原图的再传播权。后续增加公开题目必须逐项确认来源与传播许可。
 - 无分析统计、广告、远程字体、登录和内容上传接口。GitHub Pages 仍按其平台政策处理访问日志。
 - 首页搜索状态会写入 URL，关键词可能出现在浏览器历史或分享链接中。
+- 知识卡筛选同样保存在URL中；公开页面只含编者概括，参考沪教版2020版教材目录与本地稿，不是教材逐字摘录、现行考试要求或全高中覆盖证明。
 
 ## 公式验收语义
 

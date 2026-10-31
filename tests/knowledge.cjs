@@ -1,0 +1,121 @@
+'use strict';
+const fs=require('node:fs/promises');
+const path=require('node:path');
+const assert=require('node:assert/strict');
+const {pathToFileURL}=require('node:url');
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
+const root=path.resolve(__dirname,'..');
+async function main(){
+  const data=JSON.parse(await fs.readFile(path.join(root,'content/knowledge.json'),'utf8'));
+  const bases=[{name:'file',url:pathToFileURL(path.join(root,'dist')+path.sep).href}];
+  if(process.env.PUBLIC_BASE_URL) bases.push({name:'http',url:process.env.PUBLIC_BASE_URL.replace(/\/?$/,'/')});
+  const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});
+  const records=[];
+  try{
+    for(const base of bases) for(const width of [1100,390]){
+      const page=await browser.newPage({viewport:{width,height:950}});
+      const failures=[],requests=[];
+      page.on('pageerror',e=>failures.push(String(e)));
+      page.on('requestfailed',r=>failures.push(r.url()));
+      page.on('response',r=>{if(r.status()>=400) failures.push(`${r.status()} ${r.url()}`);});
+      page.on('request',r=>requests.push(r.url()));
+      const goto=async(relative)=>{await page.goto(new URL(relative,base.url).href);await page.waitForFunction(()=>document.documentElement.dataset.ready==='true');};
+      const noOverflow=async()=>assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,'整页横向溢出');
+      await goto('knowledge.html');
+      assert.equal(await page.locator('.knowledge-card').count(),data.cards.length);
+      assert.equal(await page.locator('.knowledge-group').count(),4);
+      assert.equal(await page.locator('.knowledge-card[open]').count(),0);
+      assert.equal(await page.evaluate(()=>typeof window.katex),'undefined');
+      assert.equal(requests.some(url=>/katex|search-index/.test(url)),false,'初始页不应加载公式引擎、字体或题库索引');
+      assert.equal(await page.evaluate(()=>KnowledgeMath.rendered),0);
+      await noOverflow();
+      const initial=await page.evaluate(()=>({resourceTimingEntries:performance.getEntriesByType('resource').length,resourceBytes:location.protocol==='file:'?null:performance.getEntriesByType('resource').reduce((n,r)=>n+r.decodedBodySize,0),domNodes:document.querySelectorAll('*').length,formulas:KnowledgeMath.total}));
+      initial.requestCount=requests.length;
+      if(process.env.SCREENSHOT_DIR){await fs.mkdir(process.env.SCREENSHOT_DIR,{recursive:true});await page.screenshot({path:path.join(process.env.SCREENSHOT_DIR,`${base.name}-${width}-knowledge.png`)});}
+      await page.fill('#knowledge-query','向量 夹角');
+      assert.ok(await page.locator('.knowledge-card:visible').count()>0);
+      assert.ok(await page.locator('.knowledge-card:visible').count()<data.cards.length);
+      await page.reload();
+      await page.waitForFunction(()=>document.documentElement.dataset.ready==='true');
+      assert.equal(await page.inputValue('#knowledge-query'),'向量 夹角');
+      await page.fill('#knowledge-query','知识卡不存在XYZ');
+      assert.equal(await page.locator('.knowledge-card:visible').count(),0);
+      assert.equal(await page.locator('#knowledge-empty').isVisible(),true);
+      await page.click('#knowledge-clear');
+      assert.equal(await page.locator('.knowledge-card:visible').count(),data.cards.length);
+      assert.equal(await page.locator('#knowledge-query').evaluate(n=>document.activeElement===n),true);
+      await page.selectOption('#knowledge-volume','09 复数');
+      assert.equal(await page.locator('.knowledge-card:visible').count(),11);
+      await page.click('.knowledge-nav a[href="#group-02"]');
+      assert.equal(await page.locator('.knowledge-card:visible').count(),data.cards.length);
+      const first=data.cards[0].id;
+      const start=Date.now();
+      await page.locator(`#${first}>summary`).focus();
+      await page.keyboard.press('Enter');
+      await page.waitForFunction(id=>{const card=document.getElementById(id);return card.open&&[...card.querySelectorAll('.math')].every(n=>n.dataset.mathRendered)&&!card.querySelector('.math-state').textContent;},first);
+      const firstOpenMs=Date.now()-start;
+      assert.ok(await page.evaluate(()=>KnowledgeMath.rendered)>0);
+      assert.ok(await page.evaluate(()=>KnowledgeMath.rendered<KnowledgeMath.total));
+      await noOverflow();
+      const rootCard=data.cards.find(c=>c.title.includes('乘方与开方'));
+      await goto(`knowledge.html?q=负公比#${rootCard.id}`);
+      await page.waitForFunction(id=>document.getElementById(id).querySelectorAll('[data-math-rendered]').length>0,rootCard.id);
+      assert.equal(await page.locator(`#${rootCard.id}`).isVisible(),true,'哈希目标被旧筛选隐藏');
+      assert.equal(await page.inputValue('#knowledge-query'),'');
+      const fullStart=Date.now();
+      // An explicit audit covers every formula; normal reads keep cards lazy.
+      await page.evaluate(async()=>{document.querySelectorAll('.knowledge-card').forEach(c=>{c.open=true;});await KnowledgeMath.renderAll();await document.fonts.ready;});
+      const renderAllMs=Date.now()-fullStart;
+      assert.equal(await page.evaluate(()=>KnowledgeMath.rendered===KnowledgeMath.total),true);
+      assert.deepEqual(await page.evaluate(()=>KnowledgeMath.errors),[]);
+      assert.equal(await page.locator('.math-error,.katex-error').count(),0);
+      await noOverflow();
+      for(const card of data.cards){
+        const node=page.locator(`#${card.id}`);
+        assert.equal(await node.locator('.knowledge-context a:not(.permalink)').count(),card.chapters.length);
+        await node.locator('summary').click();
+        assert.equal(await node.getAttribute('open'),null);
+        await node.locator('summary').click();
+        assert.notEqual(await node.getAttribute('open'),null);
+      }
+      if(process.env.SCREENSHOT_DIR){
+        await page.locator(`#${rootCard.id}`).scrollIntoViewIfNeeded();
+        await page.screenshot({path:path.join(process.env.SCREENSHOT_DIR,`${base.name}-${width}-knowledge-root.png`)});
+      }
+      const ids=await page.locator('[id]').evaluateAll(nodes=>nodes.map(n=>n.id));
+      assert.equal(new Set(ids).size,ids.length);
+      const html=await page.content();assert.doesNotMatch(html,/file:\/\/|\/Users\/|\/home\//);
+      const related=page.locator(`#${first} .knowledge-context a:not(.permalink)`).first();
+      const chapter=await related.textContent();await related.click();
+      await page.waitForFunction(()=>document.querySelector('#catalog-query')?.value);
+      assert.equal(await page.inputValue('#catalog-query'),chapter);
+      assert.equal(await page.locator('.public-catalog-item:visible').count(),1);
+      await page.goBack();
+      await page.waitForFunction(()=>document.documentElement.dataset.ready==='true');
+      await noOverflow();
+      const origins=requests.filter(url=>/^https?:/.test(url)).map(url=>new URL(url).origin);
+      assert.ok(origins.every(origin=>origin===new URL(base.url).origin),'出现远程资源依赖');
+      assert.deepEqual(failures,[]);
+      records.push({transport:base.name,width,cards:data.cards.length,initial,firstOpenMs,renderAllMs,allCardToggles:data.cards.length*2,mathErrors:0,overflow:false});
+      await page.close();
+      const retry=await browser.newPage();
+      await retry.route('**/katex.min.js',r=>r.abort());
+      await retry.goto(new URL(`knowledge.html#${first}`,base.url).href);
+      await retry.waitForFunction(id=>document.getElementById(id).querySelector('.math-state').textContent.includes('加载失败'),first);
+      assert.equal(await retry.locator(`#${first} .math`).first().evaluate(n=>getComputedStyle(n).visibility),'visible','公式加载失败时须保留可见源码');
+      await retry.unroute('**/katex.min.js');
+      await retry.click(`#${first}>summary`);await retry.click(`#${first}>summary`);
+      await retry.waitForFunction(id=>[...document.getElementById(id).querySelectorAll('.math')].every(n=>n.dataset.mathRendered),first);
+      assert.deepEqual(await retry.evaluate(()=>KnowledgeMath.errors),[]);await retry.close();
+      const noScript=await browser.newPage({javaScriptEnabled:false});
+      await noScript.goto(new URL('knowledge.html',base.url).href);
+      await noScript.click(`#${first}>summary`);
+      assert.equal(await noScript.locator(`#${first} .math`).first().evaluate(n=>getComputedStyle(n).visibility),'visible','无JS时不得隐藏知识公式源码');
+      await noScript.close();
+    }
+  }finally{await browser.close();}
+  const report={passed:true,records,scope:'公开知识卡桌面/手机、离线与可选线上；初始资源与局部渲染计时不是跨设备性能保证'};
+  if(process.env.KNOWLEDGE_REPORT_PATH) await fs.writeFile(process.env.KNOWLEDGE_REPORT_PATH,JSON.stringify(report,null,2)+'\n');
+  console.log(JSON.stringify(report,null,2));
+}
+main().catch(e=>{console.error(e);process.exitCode=1;});

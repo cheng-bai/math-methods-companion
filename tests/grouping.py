@@ -7,9 +7,11 @@ import importlib.util
 import json
 from pathlib import Path
 import unittest
+import sys
 from html.parser import HTMLParser
 
 root = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(root / 'scripts'))
 spec = importlib.util.spec_from_file_location('build', root / 'scripts/build.py')
 build = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(build)
@@ -58,7 +60,7 @@ class Grouping(unittest.TestCase):
         self.assertIn('id="type-fixed-sum-reciprocals"><span id="type-1-1"', html)
         home = build.homepage(catalog, demo)
         self.assertIn('这里只检索6道自编教学演示', home)
-        self.assertIn('只有单列的6道自编演示', home)
+        self.assertIn('单列的6道自编演示', home)
 
     def test_invalid_and_colliding_ids_are_rejected(self):
         demo = json.loads((root / 'content/demo.json').read_text())
@@ -87,6 +89,27 @@ class Grouping(unittest.TestCase):
             with contextlib.redirect_stdout(report), self.assertRaises(SystemExit):
                 build.check(output, False, 0)
             self.assertIn('重复的HTML ID: type-map', report.getvalue())
+
+class PublicKnowledgeTests(unittest.TestCase):
+    def setUp(self):
+        self.cards = json.loads((root / 'content/knowledge.json').read_text())
+        self.catalog = json.loads((root / 'content/catalog.json').read_text())
+
+    def test_public_whitelist_and_catalog_links(self):
+        build.validate_knowledge(self.cards, self.catalog)
+        self.cards['cards'][0]['source_path'] = 'private'
+        with self.assertRaisesRegex(ValueError, '私有回源'):
+            build.validate_knowledge(self.cards, self.catalog)
+
+    def test_duplicate_and_unknown_chapter_rejected(self):
+        self.cards['cards'].append(copy.deepcopy(self.cards['cards'][0]))
+        with self.assertRaisesRegex(ValueError, '唯一'):
+            build.validate_knowledge(self.cards, self.catalog)
+        self.cards['cards'].pop()
+        self.cards['cards'][0]['chapters'] = ['UNPUBLISHED-UNKNOWN']
+        with self.assertRaisesRegex(ValueError, '目录不存在'):
+            build.validate_knowledge(self.cards, self.catalog)
+
 
 if __name__ == '__main__':
     unittest.main()
