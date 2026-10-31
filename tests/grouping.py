@@ -37,6 +37,7 @@ class Nodes(HTMLParser):
 class Grouping(unittest.TestCase):
     def test_grouped_navigation_and_counts(self):
         demo = json.loads((root / 'content/demo.json').read_text())
+        demo['questions'] = demo['questions'][:3]
         catalog = json.loads((root / 'content/catalog.json').read_text())
         extra = copy.deepcopy(demo['questions'][0]); extra['id'] = 'Q04'
         # A second type in the same family and the same title in a different family.
@@ -68,7 +69,7 @@ class Grouping(unittest.TestCase):
         demo['questions'].append(dupe)
         with self.assertRaisesRegex(ValueError, '重复的题号'):
             build.validate_demo(demo)
-        demo['questions'][-1]['id'] = 'Q04'
+        demo['questions'][-1]['id'] = 'Q901'
         demo['questions'][-1]['type_title'] = '另一个类型'
         with self.assertRaisesRegex(ValueError, '不同分类'):
             build.validate_demo(demo)

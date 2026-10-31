@@ -58,7 +58,7 @@ def sidebar(catalog, demo, edition):
     return ''.join(parts)
 
 
-def question_card(q, type_anchor, edition):
+def question_card(q, type_anchor, edition, related_ids=()):
     anchor = q['id'].lower()
     stem = markdown(q['stem'])
     solution = ''
@@ -69,9 +69,11 @@ def question_card(q, type_anchor, edition):
                     + '<div class="note note-tip">' + markdown('**解题笔记**　' + q['note']) + '</div></details>')
     title = h(q['title']) if edition == 'teacher' else '自编教学演示'
     search = h(q['id'] + ' ' + q['title'] + ' ' + q['stem'])
-    return (f'<section class="question" id="{anchor}" data-role="自编演示" data-difficulty="未标定" data-search="{search.lower()}">'
+    related = ''.join(f'<a href="#{h(qid.lower())}">{h(qid)}</a>' for qid in related_ids if qid != q['id'])
+    related_nav = f'<nav class="question-related" aria-label="同题型例训"><span>同题型：</span>{related}</nav>' if related else ''
+    return (f'<section class="question" id="{anchor}" data-role="{h(q.get("role", "自编演示"))}" data-difficulty="未标定" data-search="{search.lower()}">'
             f'<h4>{h(q["id"])}　{title}</h4><div class="question-context"><a class="question-type-link" href="#{type_anchor}">'
-            f'题型入口：{h(q["type_title"])}</a></div>{stem}<p class="source-line">自编教学演示 · 未作难度标定</p>{solution}</section>')
+            f'题型入口：{h(q["type_title"])}</a>{related_nav}</div>{stem}<p class="source-line">{h(q.get("role", "自编演示"))} · 未作难度标定</p>{solution}</section>')
 
 
 def validate_demo(demo):
@@ -124,7 +126,8 @@ def chapter_page(catalog, demo, edition):
                           f'<span><strong>{h(family)}</strong></span><span class="family-count">{len(types)}类</span></summary>'
                           f'<div class="family-body">{"".join(type_html)}</div></details>')
     groups = ''.join(group_html)
-    cards = ''.join(question_card(q, anchors[q['id']], edition) for q in qs)
+    cards = ''.join(question_card(q, anchors[q['id']], edition,
+                                 [other['id'] for other in qs if other['type_id'] == q['type_id']]) for q in qs)
     toggler = '<button type="button" class="toggle-solutions" aria-pressed="false">展开全部解析</button>' if teacher else ''
     questions = ''.join(f'<a href="#{q["id"].lower()}">{h(q["id"])}</a>' for q in qs)
     volume_count = len({c['volume'] for c in catalog})

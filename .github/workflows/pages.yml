@@ -35,6 +35,8 @@ jobs:
         run: python3 tests/grouping.py
       - name: Check Browser Interaction
         run: node tests/browser.cjs
+      - name: Check Original Exercise Pairs
+        run: node tests/extensions.cjs
       - name: Check Public Knowledge Cards
         run: node tests/knowledge.cjs
       - uses: actions/upload-pages-artifact@v3
