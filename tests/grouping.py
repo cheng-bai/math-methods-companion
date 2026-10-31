@@ -117,6 +117,13 @@ class PublicKnowledgeTests(unittest.TestCase):
         self.assertNotEqual(section_anchor('必修第二册-7.2 新标题'),
                             section_anchor('必修第二册-7.3 新标题'))
 
+    def test_homepage_knowledge_labels_follow_current_cards(self):
+        demo = json.loads((root / 'content/demo.json').read_text())
+        page = build.homepage(self.catalog, demo, self.cards)
+        titles = dict.fromkeys(card['volume'].split(' ', 1)[1] for card in self.cards['cards'])
+        self.assertIn('、'.join(titles) + ' · 公式、识别信号和易错边界', page)
+        self.assertIn(f'{len(self.cards["cards"])}张已复核知识卡', page)
+
 
 if __name__ == '__main__':
     unittest.main()
