@@ -94,5 +94,17 @@
     "chapter_id": "DEMO-06",
     "question_id": "Q203",
     "focus": "只练增减判断：新增一项为正，部分和随项数严格增大"
+  },
+  {
+    "card_id": "k-54b02b04",
+    "chapter_id": "DEMO-06",
+    "question_id": "Q203",
+    "focus": "分母间隔为2：先拆差，再检查首尾与最小整数"
+  },
+  {
+    "card_id": "k-54b02b04",
+    "chapter_id": "DEMO-06",
+    "question_id": "Q204",
+    "focus": "分子带下标：先拆成两类可相消的和，再检查统一严格上界"
   }
 ]

@@ -85,6 +85,12 @@ async function main(){
       assert.deepEqual(await page.evaluate(()=>KnowledgeMath.errors),[]);
       assert.equal(await page.locator('.math-error,.katex-error').count(),0);
       await noOverflow();
+      const method = page.locator('#k-54b02b04');
+      assert.equal(await method.count(), 1);
+      assert.match(await method.innerText(), /编者自拟方法/);
+      const wideMethodMath = await method.locator('.math.display').evaluateAll(nodes =>
+        nodes.filter(node => node.scrollWidth > node.clientWidth + 1).map(node => node.textContent));
+      assert.deepEqual(wideMethodMath, [], '裂项方法卡的独立公式不可在窄屏中被裁切');
       for(const card of data.cards){
         const node=page.locator(`#${card.id}`);
         assert.equal(await node.locator('.knowledge-context a:not(.permalink)').count(),card.chapters.length);
