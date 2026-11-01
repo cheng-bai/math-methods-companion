@@ -1,0 +1,69 @@
+{
+  "id": "DEMO-05",
+  "title": "平面向量：分点交点与数量积",
+  "volume": "05 平面向量",
+  "notice": "4道编者自编教学演示与迁移训练，分点交点、数量积运算各一组；难度尚未实测标定，不代表平面向量板块完整覆盖。",
+  "overview": "两线交点可以在不同直线上分别表示，再比较同一组不共线向量的系数。距离之比只告诉我们两段长度之比，点可能在延长线上；求解时先允许参数取到外分情况。计算含参数向量时，先从长度与夹角求出基向量数量积，再展开模和夹角；使用平方消根号以后，回到原式检查符号。",
+  "questions": [
+    {
+      "id": "Q301",
+      "type_family": "两条线相交，怎样用向量找到交点？",
+      "type_title": "先表示分点，再比较同一组基向量的系数",
+      "type_note": "先确认三角形不退化，才能比较两个基向量的系数；分点在线段内还是在延长线上，要由参数范围判断。",
+      "type_id": "affine-intersection",
+      "title": "两个内分点连线相交，求交点位置",
+      "role": "自编演示",
+      "difficulty": "未标定",
+      "stem": "在非退化三角形$ABC$中，点$M$在线段$AB$上，$AM:MB=2:1$；点$N$在线段$AC$上，$AN:NC=1:2$。直线$CM$与$BN$交于点$P$。\n\n求$\\overrightarrow{AP}$关于$\\overrightarrow{AB}$、$\\overrightarrow{AC}$的表达式，并求$CP:PM$和$BP:PN$。",
+      "answer": "$\\overrightarrow{AP}=\\dfrac47\\overrightarrow{AB}+\\dfrac17\\overrightarrow{AC}$；$CP:PM=6:1$，$BP:PN=3:4$。",
+      "solution": "设$\\mathbf b=\\overrightarrow{AB}$，$\\mathbf c=\\overrightarrow{AC}$。$M$在$AB$上且$AM:MB=2:1$，所以$\\overrightarrow{AM}=\\frac23\\mathbf b$；同理$\\overrightarrow{AN}=\\frac13\\mathbf c$。\n\n$P$同时在$CM$和$BN$上，故可用实数$u,v$分别表示：\n$$\\begin{aligned}\n\\overrightarrow{AP}&=\\mathbf c+u\\left(\\frac23\\mathbf b-\\mathbf c\\right)\\\\\n&=\\mathbf b+v\\left(\\frac13\\mathbf c-\\mathbf b\\right).\n\\end{aligned}$$\n因为三角形非退化，$\\mathbf b,\\mathbf c$不共线。分别比较系数，得\n$$\\frac23u=1-v,\\qquad 1-u=\\frac13v.$$\n解得$u=\\frac67$，$v=\\frac37$，所以\n$$\\overrightarrow{AP}=\\frac47\\mathbf b+\\frac17\\mathbf c.$$\n两个参数均在$(0,1)$内，$P$在线段$CM$和$BN$内部，故\n$$\\begin{aligned}CP:PM&=\\frac67:\\frac17=6:1,\\\\BP:PN&=\\frac37:\\frac47=3:4.\\end{aligned}$$",
+      "equality": "$0<u,v<1$保证这里计算的是内分长度之比。将表达式代回两条直线的参数式，系数均一致；非退化条件保证系数比较有效。",
+      "note": "两种表达式描述的是同一个交点，必须选相同的起点和同一组基向量后再比较系数；参数本身是有方向的，变成线段长度比前先看它在哪个区间。"
+    },
+    {
+      "id": "Q302",
+      "type_family": "两条线相交，怎样用向量找到交点？",
+      "type_title": "先表示分点，再比较同一组基向量的系数",
+      "type_note": "先确认三角形不退化，才能比较两个基向量的系数；分点在线段内还是在延长线上，要由参数范围判断。",
+      "type_id": "affine-intersection",
+      "title": "只知道距离比：别漏掉延长线上的交点",
+      "role": "自编训练",
+      "difficulty": "未标定",
+      "stem": "在非退化三角形$ABC$中，点$N$在线段$AC$上，$AN:NC=1:2$。点$M$在射线$AB$上，$M\\ne A$；直线$CM$与直线$BN$交于点$P$，且$BP:PN=1:2$。\n\n求$AM:AB$的所有可能值。这里的比均为线段长度之比，$P$不限定在线段$BN$上。",
+      "answer": "$AM:AB=3:4$或$3:2$。",
+      "solution": "距离比没有规定$P$在线段$BN$内部，所以先用有向参数表示，再根据绝对值找出所有可能。\n\n设$\\mathbf b=\\overrightarrow{AB}$，$\\mathbf c=\\overrightarrow{AC}$，$\\overrightarrow{AM}=x\\mathbf b$，其中$x>0$。令$\\overrightarrow{BP}=v\\overrightarrow{BN}$，则\n$$\\overrightarrow{AP}=(1-v)\\mathbf b+\\frac v3\\mathbf c.$$\n由$BP:PN=1:2$，得$2|v|=|1-v|$。解得$v=\\frac13$或$v=-1$；前者为内分，后者位于$BN$的反向延长线上。\n\n又$P$在$CM$上，可设\n$$\\overrightarrow{AP}=\\mathbf c+u(x\\mathbf b-\\mathbf c).$$\n由于$\\mathbf b,\\mathbf c$不共线，比较系数得\n$$ux=1-v,\\qquad 1-u=\\frac v3.$$\n当$v=\\frac13$时，$u=\\frac89$，$x=\\frac34$；当$v=-1$时，$u=\\frac43$，$x=\\frac32$。两种$x$均为正且对应的两条直线确实在上述参数处相交。\n\n因为$M$在射线$AB$上，$AM:AB=x:1$，所以所求为$3:4$或$3:2$。",
+      "equality": "当$x=\\frac32$时，$M$在$B$的外侧，且$v=-1$使$P$位于$B$的另一侧；两段距离满足$BP:PN=1:2$。两个结果均已代回参数式，不需要在尚未确定点的位置时假设$0<v<1$。",
+      "note": "把“长度比”直接写成$v:(1-v)$会漏掉外分点。先写绝对值，再解参数；得到候选后要验证射线约束和两线确实相交。"
+    },
+    {
+      "id": "Q303",
+      "type_family": "已知长度和夹角，怎样计算含参数的向量？",
+      "type_title": "先求基向量的数量积，再展开并检查夹角符号",
+      "type_note": "展开模的平方和数量积时使用同一组数据；求夹角须先确认向量非零，平方方程后还要核对原式符号。",
+      "type_id": "dot-product-parameter",
+      "title": "向量减去可变倍数，什么时候最短",
+      "role": "自编演示",
+      "difficulty": "未标定",
+      "stem": "已知非零平面向量$\\mathbf a,\\mathbf b$满足$|\\mathbf a|=2$，$|\\mathbf b|=1$，二者夹角为$\\frac\\pi3$。对实数$t$，求$|\\mathbf a-t\\mathbf b|$的最小值及取得最小值时的$t$，并说明此时$\\mathbf a-t\\mathbf b$与$\\mathbf b$的关系。",
+      "answer": "最小值为$\\sqrt3$，当且仅当$t=1$时取得；此时$\\mathbf a-\\mathbf b$与$\\mathbf b$垂直。",
+      "solution": "由夹角定义，$\\mathbf a\\cdot\\mathbf b=2\\cdot1\\cdot\\cos\\frac\\pi3=1$。先求模的平方，避免直接处理根号：\n$$\\begin{aligned}\n|\\mathbf a-t\\mathbf b|^2\n&=|\\mathbf a|^2-2t(\\mathbf a\\cdot\\mathbf b)+t^2|\\mathbf b|^2\\\\\n&=4-2t+t^2=(t-1)^2+3.\n\\end{aligned}$$\n因为模非负，平方最小时模也最小；上式在且仅在$t=1$时取最小值3，故所求最小模为$\\sqrt3$。\n\n当$t=1$时，\n$$(\\mathbf a-\\mathbf b)\\cdot\\mathbf b=1-1=0.$$\n又$|\\mathbf a-\\mathbf b|=\\sqrt3>0$且$\\mathbf b\\ne\\mathbf0$，因此这两个向量垂直。",
+      "equality": "$t$可以取所有实数，因此配方给出的$t=1$确实允许。最小模为$\\sqrt3>0$，所以不存在向量$\\mathbf a-t\\mathbf b$为零导致夹角或垂直关系表述含糊的情况。",
+      "note": "先把$|\\mathbf a|,|\\mathbf b|$和夹角转换成三个数量积数据，再把未知量集中在一元二次式；取等时再用数量积解释垂直。"
+    },
+    {
+      "id": "Q304",
+      "type_family": "已知长度和夹角，怎样计算含参数的向量？",
+      "type_title": "先求基向量的数量积，再展开并检查夹角符号",
+      "type_note": "展开模的平方和数量积时使用同一组数据；求夹角须先确认向量非零，平方方程后还要核对原式符号。",
+      "type_id": "dot-product-parameter",
+      "title": "夹角余弦是正的，平方以后怎样排除假根",
+      "role": "自编训练",
+      "difficulty": "未标定",
+      "stem": "已知非零平面向量$\\mathbf a,\\mathbf b$满足$|\\mathbf a|=2$，$|\\mathbf b|=1$，二者夹角为$\\frac\\pi3$。设$t\\in\\mathbb R$，若$\\mathbf a-t\\mathbf b$与$\\mathbf a+\\mathbf b$的夹角为$\\frac\\pi3$，求$t$。",
+      "answer": "$t=\\dfrac43$。",
+      "solution": "由已知，$\\mathbf a\\cdot\\mathbf b=1$。把夹角条件转换为数量积等式，需同时计算模和数量积：\n$$\\begin{aligned}\n|\\mathbf a-t\\mathbf b|^2&=t^2-2t+4,\\\\\n|\\mathbf a+\\mathbf b|^2&=4+2+1=7,\\\\\n(\\mathbf a-t\\mathbf b)\\cdot(\\mathbf a+\\mathbf b)&=5-2t.\n\\end{aligned}$$\n其中$t^2-2t+4=(t-1)^2+3>0$，所以两个向量都非零。由夹角为$\\frac\\pi3$，得到原方程\n$$5-2t=\\frac{\\sqrt7}{2}\\sqrt{t^2-2t+4}.$$\n右侧为正，所以必须有$5-2t>0$。将方程两边平方并整理，得\n$$3t^2-22t+24=0,$$\n解得$t=\\frac43$或$t=6$。$t=6$使$5-2t<0$，不满足原方程；$t=\\frac43$使左侧为正，并满足平方后的等式，因此满足原方程。所求为$t=\\frac43$。",
+      "equality": "$\\mathbf a-t\\mathbf b$的模对所有$t$均为正，$\\mathbf a+\\mathbf b$的模为$\\sqrt7$，夹角始终有定义。$t=6$对应数量积为负，与题设的正余弦相冲突，不能因满足平方方程而保留。",
+      "note": "平方去根号得到的只是必要条件。先记录原式两边的符号，再对候选值回代或用同号性与平方等式共同验证。"
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 import json
 import re
 
-FILES = ('demo.json', 'functions.json', 'sequences.json')
+FILES = ('demo.json', 'functions.json', 'sequences.json', 'trigonometry.json', 'vectors.json')
 
 
 def load(content):
@@ -27,9 +27,13 @@ def validate(publications, catalog, validate_chapter):
         for field in chapter_fields - {'questions'}:
             if not isinstance(chapter[field], str) or not chapter[field].strip():
                 raise ValueError('公开讲字段必须为非空文本')
+            if any(ord(char) < 32 and char != '\n' for char in chapter[field]):
+                raise ValueError('公开讲字段含有不允许的控制字符')
         for q in chapter['questions']:
             if set(q) != question_fields:
                 raise ValueError('公开题字段不符合白名单')
             if any(not isinstance(value, str) or not value.strip() for value in q.values()):
                 raise ValueError('公开题字段必须为非空文本')
+            if any(ord(char) < 32 and char != '\n' for value in q.values() for char in value):
+                raise ValueError('公开题字段含有不允许的控制字符')
         validate_chapter(chapter)

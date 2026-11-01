@@ -25,7 +25,7 @@ function samples(){
 (async()=>{
   samples();
   const root=path.resolve(__dirname,'..');
-  const chapters=await Promise.all(['demo.json','functions.json','sequences.json'].map(async name=>JSON.parse(await fs.readFile(path.join(root,'content',name),'utf8'))));
+  const chapters=await Promise.all(['demo.json','functions.json','sequences.json','trigonometry.json','vectors.json'].map(async name=>JSON.parse(await fs.readFile(path.join(root,'content',name),'utf8'))));
   const base=process.env.PUBLIC_BASE_URL||pathToFileURL(path.join(root,'dist/')).href;
   const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH||undefined});
   const records=[];
@@ -34,8 +34,8 @@ function samples(){
       const page=await browser.newPage({viewport:{width,height:950},reducedMotion:'reduce'}),errors=[];
       page.on('pageerror',e=>errors.push(String(e)));
       await page.goto(new URL('index.html',base).href);
-      assert.deepEqual(await page.locator('.public-lesson').evaluateAll(nodes=>nodes.map(n=>n.dataset.chapter)),['DEMO-02','DEMO-01','DEMO-06']);
-      assert.equal(await page.locator('.public-lesson a').count(),6);
+      assert.deepEqual(await page.locator('.public-lesson').evaluateAll(nodes=>nodes.map(n=>n.dataset.chapter)),['DEMO-02','DEMO-01','DEMO-04','DEMO-05','DEMO-06']);
+      assert.equal(await page.locator('.public-lesson a').count(),chapters.length*2);
       assert.equal(await page.evaluate(()=>!!window.BOOK_SEARCH_INDEX),false);
       for(const chapter of chapters.slice(1))for(const edition of ['teacher','student'])for(const q of chapter.questions){
         await page.goto(new URL(`index.html?q=${q.id}&e=${edition}`,base).href);
@@ -47,7 +47,7 @@ function samples(){
         assert.equal(await page.locator('.question').count(),4);
         assert.equal(await page.locator('.solution').count(),edition==='teacher'?4:0);
         assert.equal(await page.locator('.sidebar .chapter-link.active').count(),1);
-        assert.equal(await page.locator('.sidebar a.chapter-link').count(),3);
+        assert.equal(await page.locator('.sidebar a.chapter-link').count(),chapters.length);
         assert.ok((await page.locator('.position').textContent()).includes(chapter.title));
         const card=page.locator(`#${q.id.toLowerCase()}`),partner=chapter.questions.find(o=>o.id!==q.id&&o.type_id===q.type_id);
         assert.ok(partner);await card.locator(`.question-related a[href="#${partner.id.toLowerCase()}"]`).click();
@@ -63,7 +63,7 @@ function samples(){
           const oversized = await card.locator('.math').evaluateAll(nodes=>nodes.filter(n=>n.scrollWidth>n.clientWidth+1).map(n=>({width:n.scrollWidth,available:n.clientWidth,tex:n.querySelector('annotation')?.textContent,css: getComputedStyle(n).display})));
           assert.deepEqual(oversized,[],`${width} ${edition} ${q.id}: 公式不能依赖横向滚动`);
           assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
-          if(process.env.SCREENSHOT_DIR&&['Q102','Q202','Q204'].includes(q.id)){
+          if(process.env.SCREENSHOT_DIR&&['Q102','Q202','Q204','Q302','Q304','Q402','Q404'].includes(q.id)){
             await fs.mkdir(process.env.SCREENSHOT_DIR,{recursive:true});await card.locator('h4').scrollIntoViewIfNeeded();
             await page.screenshot({path:path.join(process.env.SCREENSHOT_DIR,`${width}-${q.id}.png`)});
             await card.locator('.solution').screenshot({path:path.join(process.env.SCREENSHOT_DIR,`${width}-${q.id}-solution.png`)});
@@ -75,7 +75,7 @@ function samples(){
       await page.locator('.sidebar .volume').filter({has:page.locator('a[href="DEMO-02-student.html"]')}).locator('summary').click();
       await page.locator('.sidebar a[href="DEMO-02-student.html"]').click();
       await page.waitForURL(url=>url.href.endsWith('DEMO-02-student.html'));
-      assert.deepEqual(errors,[]);records.push({width,searchRoutes:16,mathErrors:0,overflow:false});await page.close();
+      assert.deepEqual(errors,[]);records.push({width,searchRoutes:chapters.slice(1).reduce((n,c)=>n+c.questions.length*2,0),mathErrors:0,overflow:false});await page.close();
     }
     console.log(JSON.stringify({base,records,samples:'pass'},null,2));
   }finally{await browser.close();}

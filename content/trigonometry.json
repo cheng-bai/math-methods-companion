@@ -1,0 +1,69 @@
+{
+  "id": "DEMO-04",
+  "title": "三角函数：相位区间、合成与不等式",
+  "volume": "04 三角",
+  "notice": "4道自编教学演示与迁移训练，分为相位区间的最值、三角函数合成后的不等式两类；未作难度标定，不代表三角板块完整覆盖。",
+  "overview": "先把自变量的限制转化为相位区间，再判断哪个峰、谷或端点真正落在区间内。正弦余弦相加时，先合成为一个三角函数，再求解并把结果换回原变量。Q401—Q402对照固定相位与可动相位；Q403—Q404由固定系数的不等式走向参数下的全称条件。",
+  "questions": [
+    {
+      "type_family": "三角函数在限制区间上，怎样找最大值和最小值？",
+      "type_title": "先换成相位区间，再比较峰谷和端点",
+      "type_note": "先把自变量区间完整映射为相位区间；极值点只有落在区间内才可使用，端点也必须检查。",
+      "type_id": "phase-interval-extrema",
+      "id": "Q401",
+      "title": "相位只走过一部分周期，最值在哪里？",
+      "role": "自编演示",
+      "difficulty": "未标定",
+      "stem": "设$f(x)=2\\sin(2x+\\frac\\pi6)+1$，$x\\in[0,\\frac\\pi2]$。求$f(x)$的最大值、最小值，以及取得它们的$x$。",
+      "answer": "最大值为$3$，在$x=\\frac\\pi6$时取得；最小值为$0$，在$x=\\frac\\pi2$时取得。",
+      "solution": "设$t=2x+\\frac\\pi6$。由于$x\\in[0,\\frac\\pi2]$，所以$t\\in[\\frac\\pi6,\\frac{7\\pi}6]$。区间包含正弦函数的峰值点$\\frac\\pi2$，不包含谷值点$\\frac{3\\pi}2$。因此最大值由$\\sin t=1$得到；最小值需要比较区间两端：$\\sin\\frac\\pi6=\\frac12$，$\\sin\\frac{7\\pi}6=-\\frac12$。结合正弦函数在这段区间的单调性，得\n$$-\\frac12\\le\\sin t\\le1.$$\n所以$0\\le f(x)\\le3$。解$2x+\\frac\\pi6=\\frac\\pi2$得$x=\\frac\\pi6$；解$2x+\\frac\\pi6=\\frac{7\\pi}6$得$x=\\frac\\pi2$。",
+      "equality": "相位区间内只有一个峰值点$\\frac\\pi2$，最小值只在右端$\\frac{7\\pi}6$取得；对应的两个$x$都属于原区间。",
+      "note": "不能只看到“正弦值在$[-1,1]$”就把最小值写为$-1$：相位没有走到$\\frac{3\\pi}2$。"
+    },
+    {
+      "type_family": "三角函数在限制区间上，怎样找最大值和最小值？",
+      "type_title": "先换成相位区间，再比较峰谷和端点",
+      "type_note": "先把自变量区间完整映射为相位区间；极值点只有落在区间内才可使用，端点也必须检查。",
+      "type_id": "phase-interval-extrema",
+      "id": "Q402",
+      "title": "相位区间整体移动，什么时候始终非负？",
+      "role": "自编训练",
+      "difficulty": "未标定",
+      "stem": "设$f_{\\varphi}(x)=2\\sin(2x+\\varphi)+1$，其中$\\varphi\\in[0,\\frac\\pi2]$，$x\\in[0,\\frac\\pi2]$。（1）求$f_{\\varphi}(x)$的最大值、最小值及相应的$x$；（2）求使$f_{\\varphi}(x)\\ge0$对区间内所有$x$成立的$\\varphi$范围。",
+      "answer": "（1）最大值为$3$，在$x=\\frac{\\pi-2\\varphi}{4}$时取得；最小值为$1-2\\sin\\varphi$，在$x=\\frac\\pi2$时取得，当$\\varphi=0$时$x=0$也取得最小值。（2）$\\varphi\\in[0,\\frac\\pi6]$。",
+      "solution": "设$t=2x+\\varphi$，则$t\\in[\\varphi,\\varphi+\\pi]$。给定$\\varphi\\in[0,\\frac\\pi2]$，这个相位区间总含峰值点$\\frac\\pi2$，所以最大值为$3$，由$t=\\frac\\pi2$得$x=\\frac{\\pi-2\\varphi}{4}$。\n\n另一方面，左端正弦值为$\\sin\\varphi\\ge0$，右端正弦值为$\\sin(\\pi+\\varphi)=-\\sin\\varphi\\le0$。在$[\\varphi,\\frac\\pi2]$上正弦递增，在$[\\frac\\pi2,\\pi+\\varphi]$上正弦递减，故最小值为$1-2\\sin\\varphi$，右端$x=\\frac\\pi2$总能取得。当$\\varphi=0$时左端$x=0$也取得该值。\n\n对所有$x$非负，等价于最小值非负，即$1-2\\sin\\varphi\\ge0$。利用$\\sin\\varphi$在$[0,\\frac\\pi2]$上递增，得$\\varphi\\in[0,\\frac\\pi6]$。",
+      "equality": "$\\varphi=0$时最小值在两个端点取得；$\\varphi=\\frac\\pi2$时峰值位于左端。边界$\\varphi=\\frac\\pi6$使右端函数值恰为$0$，因此应保留。",
+      "note": "相位平移后，整个区间随参数移动。先确认峰值一直在区间内，再比较两端，才能把“所有$x$成立”转成一个最小值条件。"
+    },
+    {
+      "type_family": "正弦和余弦相加，怎样解不等式？",
+      "type_title": "合成一个三角函数，再还原解的区间",
+      "type_note": "先确定振幅和相位的正确象限，再在相位区间内解不等式，最后换回原变量并检查端点。",
+      "type_id": "combine-phase-inequality",
+      "id": "Q403",
+      "title": "先合成，再求有限区间内的不等式解",
+      "role": "自编演示",
+      "difficulty": "未标定",
+      "stem": "在区间$[-\\frac\\pi3,\\pi]$上，解不等式$\\sqrt3\\sin x+\\cos x\\ge\\sqrt3$。",
+      "answer": "$x\\in[\\frac\\pi6,\\frac\\pi2]$。",
+      "solution": "因为$\\sqrt3=2\\cos\\frac\\pi6$，$1=2\\sin\\frac\\pi6$，所以\n$$\\sqrt3\\sin x+\\cos x=2\\sin(x+\\tfrac\\pi6).$$\n令$t=x+\\frac\\pi6$，由原区间知$t\\in[-\\frac\\pi6,\\frac{7\\pi}6]$。不等式化为$\\sin t\\ge\\frac{\\sqrt3}{2}$；在此相位区间中，其解为$t\\in[\\frac\\pi3,\\frac{2\\pi}3]$。减去$\\frac\\pi6$，得到$x\\in[\\frac\\pi6,\\frac\\pi2]$。",
+      "equality": "$x=\\frac\\pi6$和$x=\\frac\\pi2$分别对应相位$\\frac\\pi3$和$\\frac{2\\pi}3$，两端均取等；它们都在题设区间内。",
+      "note": "系数比较确定的是$x+\\frac\\pi6$而不是$x-\\frac\\pi6$；解出相位范围后还要减回相位。"
+    },
+    {
+      "type_family": "正弦和余弦相加，怎样解不等式？",
+      "type_title": "合成一个三角函数，再还原解的区间",
+      "type_note": "先确定振幅和相位的正确象限，再在相位区间内解不等式，最后换回原变量并检查端点。",
+      "type_id": "combine-phase-inequality",
+      "id": "Q404",
+      "title": "系数带参数，哪些参数使不等式对全区间成立？",
+      "role": "自编训练",
+      "difficulty": "未标定",
+      "stem": "设$a\\ge0$。在$x\\in[0,\\frac\\pi2]$内解不等式$a\\sin x+\\cos x\\ge1$，并求使它对该区间所有$x$都成立的$a$范围。",
+      "answer": "令$\\theta\\in[0,\\frac\\pi2)$满足$\\tan\\theta=a$，则解集为$[0,\\min\\{\\frac\\pi2,2\\theta\\}]$。不等式对整个区间恒成立当且仅当$a\\ge1$。",
+      "solution": "取$\\theta\\in[0,\\frac\\pi2)$使$\\tan\\theta=a$，并设$R=\\sqrt{1+a^2}$。于是$\\cos\\theta=1/R$，$\\sin\\theta=a/R$，从而\n$$a\\sin x+\\cos x=R\\cos(x-\\theta).$$\n因此原不等式等价于$\\cos(x-\\theta)\\ge\\cos\\theta$。由于$x\\in[0,\\frac\\pi2]$及$\\theta\\in[0,\\frac\\pi2)$，有$x-\\theta\\in[-\\theta,\\frac\\pi2-\\theta]\\subset(-\\pi,\\pi)$。在这个范围内，$\\cos u\\ge\\cos\\theta$等价于$-\\theta\\le u\\le\\theta$。代回并与原区间取交集，得到\n$$x\\in[0,\\min\\{\\tfrac\\pi2,2\\theta\\}].$$\n\n若不等式对整个原区间成立，须且只须$2\\theta\\ge\\frac\\pi2$，即$\\theta\\ge\\frac\\pi4$。利用正切在$[0,\\frac\\pi2)$上递增，得$a=\\tan\\theta\\ge1$。",
+      "equality": "当$a=0$时$\\theta=0$，解集退化为$\\{0\\}$；当$a=1$时$2\\theta=\\frac\\pi2$，右端也取等，所以$a=1$包含在恒成立范围内。对$a>1$，原区间的右端严格满足不等式，左端始终取等。",
+      "note": "对每个固定$a$，先确定角$\\theta$再解$x$；“对所有$x$”要求所得解集覆盖整个原区间，不能只验证某个点。"
+    }
+  ]
+}

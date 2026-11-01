@@ -20,7 +20,8 @@ class Publications(unittest.TestCase):
     def test_reviewed_publication_counts(self):
         validate(self.chapters, self.catalog, validate_demo)
         self.assertEqual([(c['id'], len(c['questions'])) for c in self.chapters],
-                         [('DEMO-01', 5), ('DEMO-02', 4), ('DEMO-06', 4)])
+                         [('DEMO-01', 5), ('DEMO-02', 4), ('DEMO-06', 4),
+                          ('DEMO-04', 4), ('DEMO-05', 4)])
 
     def test_reject_duplicate_invalid_or_private_fields(self):
         variants = []
@@ -34,6 +35,9 @@ class Publications(unittest.TestCase):
             variants.append(data)
         data = copy.deepcopy(self.chapters)
         data[2]['questions'][1]['type_note'] = '不一致的方法提示'
+        variants.append(data)
+        data = copy.deepcopy(self.chapters)
+        data[3]['questions'][3]['note'] = '公式意外转义为制表符\theta'
         variants.append(data)
         for data in variants:
             with self.subTest(data=data[1]['id']), self.assertRaises(ValueError):

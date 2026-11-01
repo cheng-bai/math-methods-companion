@@ -106,5 +106,53 @@
     "chapter_id": "DEMO-06",
     "question_id": "Q204",
     "focus": "分子带下标：先拆成两类可相消的和，再检查统一严格上界"
+  },
+  {
+    "card_id": "k-59f72940",
+    "chapter_id": "DEMO-04",
+    "question_id": "Q401",
+    "focus": "相位区间内判断峰谷与端点"
+  },
+  {
+    "card_id": "k-59f72940",
+    "chapter_id": "DEMO-04",
+    "question_id": "Q402",
+    "focus": "相位区间内判断峰谷与端点"
+  },
+  {
+    "card_id": "k-1d1be607",
+    "chapter_id": "DEMO-04",
+    "question_id": "Q403",
+    "focus": "用和差公式合成为单个三角函数"
+  },
+  {
+    "card_id": "k-1d1be607",
+    "chapter_id": "DEMO-04",
+    "question_id": "Q404",
+    "focus": "用和差公式合成为单个三角函数"
+  },
+  {
+    "card_id": "k-a44341b9",
+    "chapter_id": "DEMO-05",
+    "question_id": "Q301",
+    "focus": "用有向参数区分内外分，再确定位置"
+  },
+  {
+    "card_id": "k-a44341b9",
+    "chapter_id": "DEMO-05",
+    "question_id": "Q302",
+    "focus": "用有向参数区分内外分，再确定位置"
+  },
+  {
+    "card_id": "k-f1feb0fd",
+    "chapter_id": "DEMO-05",
+    "question_id": "Q303",
+    "focus": "展开数量积，并检查夹角与向量非零"
+  },
+  {
+    "card_id": "k-f1feb0fd",
+    "chapter_id": "DEMO-05",
+    "question_id": "Q304",
+    "focus": "展开数量积，并检查夹角与向量非零"
   }
 ]
