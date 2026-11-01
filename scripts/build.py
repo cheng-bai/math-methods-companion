@@ -140,12 +140,16 @@ def chapter_page(catalog, demo, edition, example_links=(), knowledge=None, publi
     toggler = '<button type="button" class="toggle-solutions" aria-pressed="false">展开全部解析</button>' if teacher else ''
     questions = ''.join(f'<a href="#{q["id"].lower()}">{h(q["id"])}</a>' for q in qs)
     volume_count = len({c['volume'] for c in catalog})
+    figure = ('<figure class="chapter-figure"><img src="../assets/pyramid-pabc.svg" '
+              'alt="三棱锥 P-ABC：PA 垂直底面，AB 垂直 AC 的空间构型示意">'
+              '<figcaption>本讲共用构型示意；各题的辅助点和位置以题干为准。</figcaption></figure>'
+              if demo['id'] == 'DEMO-07' else '')
     body = f'''<body id="top"><div class="reading-progress" aria-hidden="true"><span></span></div>
 <header class="topbar"><button class="menu-toggle" aria-expanded="false" aria-controls="book-nav">☰ <span>全书目录</span></button>{brand('../')}<div class="top-right"><span class="edition">{label} · 公开演示</span><a href="{demo['id']}-{other}.html">切换{other_label} ↗</a></div></header>
 <div class="backdrop" hidden></div><div class="layout"><aside class="sidebar" id="book-nav" aria-label="全书目录"><div class="side-head"><div><span class="eyebrow">THE COMPLETE MAP</span><h2>全书结构</h2><p>{volume_count}个板块 · {len(catalog)}讲目录</p></div><button class="menu-close" aria-label="关闭目录">×</button></div><div class="position"><span>当前位置</span><strong>{h(demo['volume'])}</strong><small>公开例训 · {h(demo["title"])}</small></div><nav class="book-tree">{sidebar(catalog, demo, edition, publications)}</nav><p class="side-foot">目录元数据不是知识覆盖证明。未公开章不提供正文链接。</p></aside>
 <main><div class="breadcrumbs"><a href="../index.html">全书</a><span>/</span><button type="button" class="jump-to-volume">{h(demo['volume'])}</button><span>/</span><b>公开演示</b></div><div class="main-grid"><div class="reading-column"><section class="hero"><div class="hero-top"><span>PUBLIC DEMONSTRATION</span><span>{h(demo['id'])}</span></div><div class="hero-body"><div><div class="hero-kicker">自编教学演示 · {label}</div><h1>{h(demo['title'])}</h1><p>{h(demo['notice'])}</p><div class="hero-stats"><span><b>{len(qs):02}</b> 公开演示</span><span><b>未标定</b> 难度</span></div></div></div></section>
 <section class="tools" aria-label="题目筛选"><div class="tools-heading"><div><span class="eyebrow">READ YOUR WAY</span><h2>按你的节奏阅读</h2></div><span class="live-count" aria-live="polite">{len(qs)} / {len(qs)} 题块</span></div><div class="tool-row"><label class="search"><span aria-hidden="true">⌕</span><input type="search" id="search" placeholder="搜索演示题号或题干" aria-label="搜索演示题号或题干"></label><div class="filters" role="group" aria-label="题目筛选"><button data-filter="all" aria-pressed="true">全部演示</button></div>{toggler}</div><p class="tool-note">学生版没有答案解析，但保留方法分类提示，不是无提示测试卷。</p></section>
-<section class="type-map" id="type-map"><span class="eyebrow">QUESTION TYPES</span><h2>演示题型地图</h2><p>{len(qs)}道独立教学示例，不代表本板块的完整题型。</p>{groups}</section><article class="book-content"><h2 id="overview">整体把握</h2>{markdown(demo['overview'])}<h2 id="examples">自编教学演示</h2>{cards}</article><footer class="page-footer"><a href="../index.html">← 返回公开首页</a></footer></div>
+<section class="type-map" id="type-map"><span class="eyebrow">QUESTION TYPES</span><h2>演示题型地图</h2><p>{len(qs)}道独立教学示例，不代表本板块的完整题型。</p>{groups}</section><article class="book-content"><h2 id="overview">整体把握</h2>{markdown(demo['overview'])}{figure}<h2 id="examples">自编教学演示</h2>{cards}</article><footer class="page-footer"><a href="../index.html">← 返回公开首页</a></footer></div>
 <aside class="chapter-rail"><div class="rail-inner"><span class="eyebrow">IN THIS CHAPTER</span><h2>本讲大纲</h2><button class="outline-toggle" aria-expanded="false">展开本讲大纲与题号 ↓</button><div class="rail-content"><nav class="outline"><a href="#type-map">题型地图</a><a href="#overview">整体把握</a><a href="#examples">自编演示</a></nav><div class="rail-rule"></div><div class="rail-question-title"><b>题号直达</b></div><nav class="question-index" aria-label="题号直达">{questions}</nav></div></div></aside></div></main></div>'''
     meta = {'id': demo['id'], 'edition': edition, 'questions': len(qs), 'content': '自编教学演示，未作难度标定'}
     return head(demo['title'] + '｜' + label, True) + body + '<script type="application/json" id="source-meta">' + json.dumps(meta, ensure_ascii=False).replace('<', '\\u003c') + '</script></body></html>'
@@ -258,7 +262,7 @@ def main():
     (output / 'assets').mkdir(exist_ok=True)
     for name in ('LICENSE', 'THIRD_PARTY.md'):
         shutil.copy2(ROOT / name, output / name)
-    for name in ('site.css', 'site.js', 'search.js', 'knowledge.css', 'knowledge.js'):
+    for name in ('site.css', 'site.js', 'search.js', 'knowledge.css', 'knowledge.js', 'pyramid-pabc.svg'):
         staged = ROOT / 'assets' / name
         if staged.is_file():
             shutil.copy2(staged, output / 'assets' / name)

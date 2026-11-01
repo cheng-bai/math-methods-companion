@@ -1,0 +1,69 @@
+{
+  "id": "DEMO-07",
+  "title": "立体几何：线面角与点面距离",
+  "volume": "07 立体几何与空间向量",
+  "notice": "4道编者自编教学演示与迁移训练，线面角和点面距离各一组；难度尚未实测标定，不代表立体几何板块完整覆盖。",
+  "overview": "线面角先找斜线在平面上的正射影，再在直角三角形中求角。点到斜面的距离可以用同一四面体的不同底面与高转化；动点在线段上时，再用相似或体积比例联系距离。",
+  "questions": [
+    {
+      "id": "Q701",
+      "type_family": "斜线与底面的角，如何找到正射影？",
+      "type_title": "先找垂足和射影，再在直角三角形中计算",
+      "type_note": "先找斜线在底面上的正射影，再用直角三角形；动点取得端点或垂足时也应检查。",
+      "type_id": "projection-angle",
+      "title": "底边中点确定斜线的倾角",
+      "role": "自编演示",
+      "difficulty": "未标定",
+      "stem": "在三棱锥$P\\! -\\! ABC$中，$PA\\perp$平面$ABC$，$\\angle BAC=90^\\circ$，且$AB=3$、$AC=4$、$PA=6$。设$M$为$BC$的中点，求直线$PM$与平面$ABC$所成角的正切值。",
+      "answer": "$\\tan\\angle PMA=\\dfrac{12}{5}$。",
+      "solution": "由于$PA\\perp$平面$ABC$，$P$在底面上的垂足是$A$；$M$已在底面内，因此$PM$在底面上的正射影为$AM$。$M\\ne A$，故直线$PM$与底面所成角是$\\angle PMA$。\n\n在直角三角形$ABC$中，$BC=5$，斜边中点$M$满足$AM=\\frac52$。在直角三角形$PAM$中，$PA\\perp AM$，故$$\\tan\\angle PMA=\\frac{PA}{AM}=\\frac{6}{5/2}=\\frac{12}{5}.$$",
+      "equality": "$M$位于$BC$上且$A\\notin BC$，所以射影$AM$非零；$PA>0$，所求角在$(0,\\frac\\pi2)$内，正切值对应唯一的线面角。",
+      "note": "先把空间问题转成底面中的射影长度。斜边中点到三个顶点等距，使$AM$不必再单独建系。"
+    },
+    {
+      "id": "Q702",
+      "type_family": "斜线与底面的角，如何找到正射影？",
+      "type_title": "先找垂足和射影，再在直角三角形中计算",
+      "type_note": "先找斜线在底面上的正射影，再用直角三角形；动点取得端点或垂足时也应检查。",
+      "type_id": "projection-angle",
+      "title": "底边动点：通过射影长度确定倾角范围",
+      "role": "自编训练",
+      "difficulty": "未标定",
+      "stem": "在三棱锥$P\\! -\\! ABC$中，$PA\\perp$平面$ABC$，$\\angle BAC=90^\\circ$，且$AB=3$、$AC=4$、$PA=6$。点$M$在线段$BC$上运动（包括端点）。记直线$PM$与平面$ABC$所成的角为$\\theta$，求$\\tan\\theta$的取值范围，并分别确定取得端点时$M$的位置。",
+      "answer": "$\\tan\\theta\\in[\\frac32,\\frac52]$；最小值在$M=C$时取得，最大值在$M$为$A$到$BC$的垂足时取得，此时$BM:MC=9:16$。",
+      "solution": "由$PA\\perp$平面$ABC$，$PM$在底面上的射影为$AM$。由于$A\\notin BC$，对所有$M\\in BC$均有$AM>0$，于是$$\\tan\\theta=\\frac{PA}{AM}=\\frac6{AM}.$$因此先求$AM$的范围。\n\n设$\\overrightarrow{BM}=t\\overrightarrow{BC}$，其中$0\\le t\\le1$。因为$AB\\perp AC$，所以$$\\begin{aligned}AM^2&=9(1-t)^2+16t^2\\\\&=25\\left(t-\\frac9{25}\\right)^2+\\frac{144}{25}.\\end{aligned}$$顶点$t=\\frac9{25}$在线段内，故$AM$最小值为$\\frac{12}{5}$；比较两端点，$AM$最大值为$4$，只在$M=C$时取得。由$6/AM$在正数上递减，得$$\\frac32\\le\\tan\\theta\\le\\frac52.$$\n\n当$t=\\frac9{25}$时$BM:MC=9:16$，且$AM$最短，所以此时$AM\\perp BC$；两个端点均有相应位置达到。",
+      "equality": "参数$t$的范围包含两端，且最短位置$t=\\frac9{25}$属于该范围；$AM$始终为正，取倒数时不改变可行性，也不能把最小射影误认为最小倾角。",
+      "note": "同一条垂线高度固定，角的变化完全由射影长度决定。先比较正的$AM$，再注意倒数会使最大、最小位置交换。"
+    },
+    {
+      "id": "Q703",
+      "type_family": "点到斜面距离，能否借体积计算？",
+      "type_title": "以同一四面体的不同面为底，转化为高",
+      "type_note": "以同一个三角形为底比较四面体体积；动点在棱上时，相关高度随位置成比例。",
+      "type_id": "tetrahedron-volume-distance",
+      "title": "以斜面为底，求顶点到平面的距离",
+      "role": "自编演示",
+      "difficulty": "未标定",
+      "stem": "在三棱锥$P\\! -\\! ABC$中，$PA\\perp$平面$ABC$，$\\angle BAC=90^\\circ$，且$AB=3$、$AC=4$、$PA=6$。求点$A$到平面$PBC$的距离。",
+      "answer": "$\\dfrac{12}{\\sqrt{29}}$。",
+      "solution": "要求$A$到平面$PBC$的距离，可把它看作三棱锥$A\\! -\\! PBC$以$PBC$为底时的高。同一个三棱锥也可用底面$ABC$与高$PA$求体积：$$V=\\frac13\\cdot\\frac{3\\cdot4}{2}\\cdot6=12.$$\n\n为了求$\\triangle PBC$的面积，作$AD\\perp BC$，垂足为$D$。$ABC$为直角三角形，$BC=5$，由面积得$AD=\\frac{12}{5}$。又$PA\\perp BC$，而$\\overrightarrow{PD}=\\overrightarrow{PA}+\\overrightarrow{AD}$，故$PD\\perp BC$，于是$$PD=\\sqrt{PA^2+AD^2}=\\frac{6\\sqrt{29}}5.$$因此$$S_{PBC}=\\frac12\\cdot5\\cdot\\frac{6\\sqrt{29}}5=3\\sqrt{29}.$$\n\n设所求距离为$h$，由$12=\\frac13S_{PBC}h$得$$h=\\frac{12}{\\sqrt{29}}.$$",
+      "equality": "$BC>0$且$P\\notin$平面$ABC$，所以$\\triangle PBC$面积非零；用体积除以其面积合法，所得为非负的点面距离。",
+      "note": "距离是“换底后的高”。求斜面面积时，不能把$AD$当成斜面内的高；要先证明连接$P$与垂足的$PD$垂直$BC$。"
+    },
+    {
+      "id": "Q704",
+      "type_family": "点到斜面距离，能否借体积计算？",
+      "type_title": "以同一四面体的不同面为底，转化为高",
+      "type_note": "以同一个三角形为底比较四面体体积；动点在棱上时，相关高度随位置成比例。",
+      "type_id": "tetrahedron-volume-distance",
+      "title": "棱上动点到两个平面的距离相等",
+      "role": "自编训练",
+      "difficulty": "未标定",
+      "stem": "在三棱锥$P\\! -\\! ABC$中，$PA\\perp$平面$ABC$，$\\angle BAC=90^\\circ$，且$AB=3$、$AC=4$、$PA=6$。点$D$在线段$AP$上运动（包括端点）。若$D$到平面$PBC$的距离等于$D$到平面$ABC$的距离，求$AD$。",
+      "answer": "$AD=\\dfrac{12}{\\sqrt{29}+2}$。",
+      "solution": "设$AD=6t$，其中$0\\le t\\le1$。因为$AP\\perp$平面$ABC$，所以$D$到平面$ABC$的距离为$6t$。再计算$D$到另一平面的距离。\n\n作$AE\\perp$平面$PBC$，垂足为$E$。三棱锥的体积为$V=\\frac13\\cdot\\frac12\\cdot3\\cdot4\\cdot6=12$。作$AH\\perp BC$于$H$，则$BC=5$，$AH=\\frac{12}{5}$。由$PA\\perp$平面$ABC$及$AH\\perp BC$知$PH\\perp BC$，且$PH=\\frac{6\\sqrt{29}}5$，从而$S_{PBC}=\\frac12BC\\cdot PH=3\\sqrt{29}$。以$PBC$为底，由$V=\\frac13S_{PBC}\\cdot AE$得$AE=\\frac{12}{\\sqrt{29}}$。\n\n当$0\\le t<1$时，过$D$作$DF\\parallel AE$，交平面$PBC$于$F$。因$AE$垂直平面$PBC$，$DF$也是该平面的垂线。$D$在$AP$上、$F$在$PE$上，由$DF\\parallel AE$可得$\\triangle PDF\\sim\\triangle PAE$，所以$$DF=\\frac{PD}{PA}\\,AE=(1-t)\\frac{12}{\\sqrt{29}}.$$当$t=1$时$D=P$在平面$PBC$内，距离为$0$，同样符合这个表达式。\n\n两个距离相等当且仅当$$\\frac{12(1-t)}{\\sqrt{29}}=6t,$$解得$t=\\frac2{\\sqrt{29}+2}$，于是$AD=6t=\\frac{12}{\\sqrt{29}+2}$。",
+      "equality": "$t=\\frac2{\\sqrt{29}+2}\\in(0,1)$，确在线段$AP$内。等式两边分别是实际距离，线性方程只有一个解，因此没有遗漏端点或其他位置。",
+      "note": "把一个端点在目标平面内的线段作为整体：到该平面的距离按剩余线段比例变化，再与另一平面的距离比较。"
+    }
+  ]
+}

@@ -19,3 +19,7 @@
 .question-knowledge{display:grid;gap:5px;margin:12px 0 18px;padding-left:12px;border-left:2px solid var(--teal);font:12px/1.8 var(--sans);color:var(--muted)}.question-knowledge strong{font-size:11px}.book-content .question-knowledge a{color:var(--teal);text-underline-offset:3px;justify-self:start}.question-knowledge span{overflow-wrap:anywhere}
 
 .public-lessons{border-top:1px solid var(--line);padding-top:24px}.public-lessons>p{font:13px/1.8 var(--sans);color:var(--muted)}.public-lesson h3{font:600 18px/1.7 var(--serif);color:var(--forest)}
+
+.book-content .chapter-figure{margin:1.2rem auto 1.8rem;max-width:360px;text-align:center}
+.chapter-figure img{display:block;width:100%;height:auto}
+.chapter-figure figcaption{color:var(--muted);font:12px/1.6 var(--sans)}

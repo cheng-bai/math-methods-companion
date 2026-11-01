@@ -154,5 +154,53 @@
     "chapter_id": "DEMO-05",
     "question_id": "Q304",
     "focus": "展开数量积，并检查夹角与向量非零"
+  },
+  {
+    "card_id": "k-d3cc05ca",
+    "chapter_id": "DEMO-07",
+    "question_id": "Q701",
+    "focus": "找垂足与投影，在线面角三角形中比较"
+  },
+  {
+    "card_id": "k-d3cc05ca",
+    "chapter_id": "DEMO-07",
+    "question_id": "Q702",
+    "focus": "找垂足与投影，在线面角三角形中比较"
+  },
+  {
+    "card_id": "k-9c7cd1cf",
+    "chapter_id": "DEMO-07",
+    "question_id": "Q703",
+    "focus": "同一棱锥换底，将点面距离看作高"
+  },
+  {
+    "card_id": "k-9c7cd1cf",
+    "chapter_id": "DEMO-07",
+    "question_id": "Q704",
+    "focus": "同一棱锥换底，将点面距离看作高"
+  },
+  {
+    "card_id": "k-9ca96633",
+    "chapter_id": "DEMO-08",
+    "question_id": "Q801",
+    "focus": "联立后检查交点，再用根和与根差"
+  },
+  {
+    "card_id": "k-9ca96633",
+    "chapter_id": "DEMO-08",
+    "question_id": "Q802",
+    "focus": "联立后检查交点，再用根和与根差"
+  },
+  {
+    "card_id": "k-1346f3e5",
+    "chapter_id": "DEMO-08",
+    "question_id": "Q803",
+    "focus": "点差得到候选弦，再验证两个不同交点"
+  },
+  {
+    "card_id": "k-1346f3e5",
+    "chapter_id": "DEMO-08",
+    "question_id": "Q804",
+    "focus": "点差得到候选弦，再验证两个不同交点"
   }
 ]

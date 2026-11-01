@@ -21,7 +21,7 @@ class Publications(unittest.TestCase):
         validate(self.chapters, self.catalog, validate_demo)
         self.assertEqual([(c['id'], len(c['questions'])) for c in self.chapters],
                          [('DEMO-01', 5), ('DEMO-02', 4), ('DEMO-06', 4),
-                          ('DEMO-04', 4), ('DEMO-05', 4)])
+                          ('DEMO-04', 4), ('DEMO-05', 4), ('DEMO-07', 4), ('DEMO-08', 4)])
 
     def test_reject_duplicate_invalid_or_private_fields(self):
         variants = []

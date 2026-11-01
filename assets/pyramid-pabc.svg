@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 360" role="img" aria-labelledby="title desc">
+  <title id="title">三棱锥 P-ABC 的示意图</title>
+  <desc id="desc">PA垂直于底面ABC，AB垂直AC，图中位置仅为示意。虚线表示被面PBC遮住的棱。</desc>
+  <rect x="0" y="0" width="460" height="360" fill="#fff"/>
+  <!-- Orthographic projection of A=(0,0,0), B=(3,0,0), C=(0,4,0), P=(0,0,6). -->
+  <path d="M240 29.8 L339.7 317.6 L107.1 336.8 Z" fill="#edf5f1"/>
+  <path d="M240 29.8 L240 260 M240 260 L339.7 317.6 M240 260 L107.1 336.8"
+        fill="none" stroke="#647b73" stroke-width="1.7" stroke-dasharray="6 5"/>
+  <path d="M240 29.8 L339.7 317.6 L107.1 336.8 Z" fill="none" stroke="#203c37" stroke-width="2.4" stroke-linejoin="round"/>
+  <!-- Projected right-angle squares: AB perpendicular AC, PA perpendicular AB. -->
+  <path d="M251.96 266.91 L236.01 276.13 L224.05 269.22 M240 232.38 L251.96 239.29 L251.96 266.91"
+        fill="none" stroke="#385952" stroke-width="1.35"/>
+  <g fill="#203c37">
+    <circle cx="240" cy="29.8" r="3"/><circle cx="240" cy="260" r="3"/>
+    <circle cx="339.7" cy="317.6" r="3"/><circle cx="107.1" cy="336.8" r="3"/>
+  </g>
+  <g fill="#183831" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="18">
+    <text x="230" y="20">P</text><text x="247" y="257">A</text>
+    <text x="348" y="323">B</text><text x="91" y="344">C</text>
+  </g>
+</svg>
