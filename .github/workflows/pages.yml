@@ -45,6 +45,8 @@ jobs:
         run: node tests/browser.cjs
       - name: Check Dictionary Search
         run: node tests/dictionary_search.cjs
+      - name: Check Type Index
+        run: node tests/type_index.cjs
       - name: Check Narrow Formula Layout
         run: node tests/mobile_math.cjs
       - name: Check Original Exercise Pairs

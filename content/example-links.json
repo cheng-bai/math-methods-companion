@@ -226,5 +226,29 @@
     "chapter_id": "DEMO-09",
     "question_id": "Q904",
     "focus": "按来源比较联合概率并归一化，零概率分支单独检查"
+  },
+  {
+    "card_id": "k-5f183329",
+    "chapter_id": "DEMO-10",
+    "question_id": "Q1001",
+    "focus": "分离实部和虚部，检查纯虚数的非零条件"
+  },
+  {
+    "card_id": "k-5f183329",
+    "chapter_id": "DEMO-10",
+    "question_id": "Q1002",
+    "focus": "分离实部和虚部，检查纯虚数的非零条件"
+  },
+  {
+    "card_id": "k-589f4fa3",
+    "chapter_id": "DEMO-10",
+    "question_id": "Q1003",
+    "focus": "把复数模读成距离，联立两圆并检查特殊圆心"
+  },
+  {
+    "card_id": "k-589f4fa3",
+    "chapter_id": "DEMO-10",
+    "question_id": "Q1004",
+    "focus": "把复数模读成距离，联立两圆并检查特殊圆心"
   }
 ]

@@ -41,7 +41,7 @@ async function main() {
   checkMathematics();
   const demo = JSON.parse(await fs.readFile(path.join(root, 'content/demo.json'), 'utf8'));
   const questionCount = demo.questions.length;
-  const publications = await Promise.all(['demo.json','functions.json','sequences.json','trigonometry.json','vectors.json','stereometry.json','conics.json','probability.json'].map(async name => JSON.parse(await fs.readFile(path.join(root,'content',name),'utf8'))));
+  const publications = await Promise.all(['demo.json','functions.json','sequences.json','trigonometry.json','vectors.json','stereometry.json','conics.json','probability.json','complex.json'].map(async name => JSON.parse(await fs.readFile(path.join(root,'content',name),'utf8'))));
   const allQuestions = publications.flatMap(chapter => chapter.questions.map(q => ({...q, chapter:chapter.id})));
   const publicCount = allQuestions.length;
   const browser = await chromium.launch({headless:true,

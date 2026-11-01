@@ -46,7 +46,7 @@
       "difficulty": "未标定",
       "stem": "在区间$[-\\frac\\pi3,\\pi]$上，解不等式$\\sqrt3\\sin x+\\cos x\\ge\\sqrt3$。",
       "answer": "$x\\in[\\frac\\pi6,\\frac\\pi2]$。",
-      "solution": "因为$\\sqrt3=2\\cos\\frac\\pi6$，$1=2\\sin\\frac\\pi6$，所以\n$$\\sqrt3\\sin x+\\cos x=2\\sin(x+\\tfrac\\pi6).$$\n令$t=x+\\frac\\pi6$，由原区间知$t\\in[-\\frac\\pi6,\\frac{7\\pi}6]$。不等式化为$\\sin t\\ge\\frac{\\sqrt3}{2}$；在此相位区间中，其解为$t\\in[\\frac\\pi3,\\frac{2\\pi}3]$。减去$\\frac\\pi6$，得到$x\\in[\\frac\\pi6,\\frac\\pi2]$。",
+      "solution": "因为$\\sqrt3=2\\cos\\frac\\pi6$，$1=2\\sin\\frac\\pi6$，所以\n$$\\begin{gathered}\\sqrt3\\sin x+\\cos x\\\\=2\\sin(x+\\tfrac\\pi6).\\end{gathered}$$\n令$t=x+\\frac\\pi6$，由原区间知$t\\in[-\\frac\\pi6,\\frac{7\\pi}6]$。不等式化为$\\sin t\\ge\\frac{\\sqrt3}{2}$；在此相位区间中，其解为$t\\in[\\frac\\pi3,\\frac{2\\pi}3]$。减去$\\frac\\pi6$，得到$x\\in[\\frac\\pi6,\\frac\\pi2]$。",
       "equality": "$x=\\frac\\pi6$和$x=\\frac\\pi2$分别对应相位$\\frac\\pi3$和$\\frac{2\\pi}3$，两端均取等；它们都在题设区间内。",
       "note": "系数比较确定的是$x+\\frac\\pi6$而不是$x-\\frac\\pi6$；解出相位范围后还要减回相位。"
     },
