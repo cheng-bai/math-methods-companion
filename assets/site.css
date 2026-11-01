@@ -23,3 +23,11 @@
 .book-content .chapter-figure{margin:1.2rem auto 1.8rem;max-width:360px;text-align:center}
 .chapter-figure img{display:block;width:100%;height:auto}
 .chapter-figure figcaption{color:var(--muted);font:12px/1.6 var(--sans)}
+.home-knowledge-results{margin:10px 0 20px;padding:14px;background:#eef5f0;border-left:3px solid var(--teal)}
+.home-knowledge-results h3{margin:0;color:var(--forest);font:600 15px var(--serif)}
+.home-knowledge-results p{margin:6px 0 10px}
+.home-knowledge-list{display:grid;gap:6px}
+.home-knowledge-list a{display:grid;gap:3px;padding:9px 11px;background:var(--sheet);border:1px solid var(--line);font:13px/1.5 var(--sans)}
+.home-knowledge-list a:hover,.home-knowledge-list a:focus-visible{border-color:var(--teal)}
+.home-knowledge-list small{font:11px/1.5 var(--sans);color:var(--muted)}
+.all-knowledge-results{display:inline-block;margin-top:10px;color:var(--teal);font:12px var(--sans)}

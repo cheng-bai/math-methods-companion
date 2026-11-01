@@ -25,7 +25,7 @@ function samples(){
 (async()=>{
   samples();
   const root=path.resolve(__dirname,'..');
-  const chapters=await Promise.all(['demo.json','functions.json','sequences.json','trigonometry.json','vectors.json','stereometry.json','conics.json'].map(async name=>JSON.parse(await fs.readFile(path.join(root,'content',name),'utf8'))));
+  const chapters=await Promise.all(['demo.json','functions.json','sequences.json','trigonometry.json','vectors.json','stereometry.json','conics.json','probability.json'].map(async name=>JSON.parse(await fs.readFile(path.join(root,'content',name),'utf8'))));
   const base=process.env.PUBLIC_BASE_URL||pathToFileURL(path.join(root,'dist/')).href;
   const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH||undefined});
   const records=[];
@@ -34,7 +34,7 @@ function samples(){
       const page=await browser.newPage({viewport:{width,height:950},reducedMotion:'reduce'}),errors=[];
       page.on('pageerror',e=>errors.push(String(e)));
       await page.goto(new URL('index.html',base).href);
-      assert.deepEqual(await page.locator('.public-lesson').evaluateAll(nodes=>nodes.map(n=>n.dataset.chapter)),['DEMO-02','DEMO-01','DEMO-04','DEMO-05','DEMO-06','DEMO-07','DEMO-08']);
+      assert.deepEqual(await page.locator('.public-lesson').evaluateAll(nodes=>nodes.map(n=>n.dataset.chapter)),['DEMO-02','DEMO-01','DEMO-04','DEMO-05','DEMO-06','DEMO-07','DEMO-08','DEMO-09']);
       assert.equal(await page.locator('.public-lesson a').count(),chapters.length*2);
       assert.equal(await page.evaluate(()=>!!window.BOOK_SEARCH_INDEX),false);
       for(const chapter of chapters.slice(1))for(const edition of ['teacher','student'])for(const q of chapter.questions){
@@ -69,7 +69,7 @@ function samples(){
           const oversized = await card.locator('.math').evaluateAll(nodes=>nodes.filter(n=>n.scrollWidth>n.clientWidth+1).map(n=>({width:n.scrollWidth,available:n.clientWidth,tex:n.querySelector('annotation')?.textContent,css: getComputedStyle(n).display})));
           assert.deepEqual(oversized,[],`${width} ${edition} ${q.id}: 公式不能依赖横向滚动`);
           assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
-          if(process.env.SCREENSHOT_DIR&&['Q102','Q202','Q204','Q302','Q304','Q402','Q404','Q702','Q704','Q802','Q804'].includes(q.id)){
+          if(process.env.SCREENSHOT_DIR&&['Q102','Q202','Q204','Q302','Q304','Q402','Q404','Q702','Q704','Q802','Q804','Q903','Q904'].includes(q.id)){
             await fs.mkdir(process.env.SCREENSHOT_DIR,{recursive:true});await card.locator('h4').scrollIntoViewIfNeeded();
             await page.screenshot({path:path.join(process.env.SCREENSHOT_DIR,`${width}-${q.id}.png`)});
             await card.locator('.solution').screenshot({path:path.join(process.env.SCREENSHOT_DIR,`${width}-${q.id}-solution.png`)});

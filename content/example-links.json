@@ -202,5 +202,29 @@
     "chapter_id": "DEMO-08",
     "question_id": "Q804",
     "focus": "点差得到候选弦，再验证两个不同交点"
+  },
+  {
+    "card_id": "k-db26904c",
+    "chapter_id": "DEMO-09",
+    "question_id": "Q901",
+    "focus": "先筛选等可能结果，再数条件与目标同时成立的情况"
+  },
+  {
+    "card_id": "k-db26904c",
+    "chapter_id": "DEMO-09",
+    "question_id": "Q902",
+    "focus": "先筛选等可能结果，再数条件与目标同时成立的情况"
+  },
+  {
+    "card_id": "k-fe0bb08f",
+    "chapter_id": "DEMO-09",
+    "question_id": "Q903",
+    "focus": "按来源计算共同发生的概率，再比较观察结果中的占比"
+  },
+  {
+    "card_id": "k-fe0bb08f",
+    "chapter_id": "DEMO-09",
+    "question_id": "Q904",
+    "focus": "按来源比较联合概率并归一化，零概率分支单独检查"
   }
 ]

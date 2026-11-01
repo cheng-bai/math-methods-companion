@@ -3,7 +3,7 @@ import json
 import re
 
 FILES = ('demo.json', 'functions.json', 'sequences.json', 'trigonometry.json', 'vectors.json',
-         'stereometry.json', 'conics.json')
+         'stereometry.json', 'conics.json', 'probability.json')
 
 
 def load(content):

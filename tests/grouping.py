@@ -60,7 +60,7 @@ class Grouping(unittest.TestCase):
         html = build.chapter_page(catalog, demo, 'teacher')
         self.assertIn('id="type-fixed-sum-reciprocals"><span id="type-1-1"', html)
         home = build.homepage(catalog, demo)
-        self.assertIn('这里只检索6道自编教学演示', home)
+        self.assertIn('检索编者知识卡与6道公开自编例训；不检索未公开正文', home)
         self.assertIn('单列的6道自编演示', home)
 
     def test_invalid_and_colliding_ids_are_rejected(self):

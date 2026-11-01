@@ -1,0 +1,84 @@
+'use strict';
+const assert=require('node:assert/strict');
+const path=require('node:path');
+const {pathToFileURL}=require('node:url');
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
+(async()=>{
+  const base=process.env.PUBLIC_BASE_URL||pathToFileURL(path.resolve(__dirname,'../dist')+'/').href;
+  const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH||undefined});
+  try {
+    for(const width of [390,1100]) {
+      const page=await browser.newPage({viewport:{width,height:900}}),errors=[];
+      page.on('pageerror',e=>errors.push(String(e)));
+      await page.goto(new URL('index.html',base).href);
+      assert.equal(await page.evaluate(()=>typeof window.BOOK_KNOWLEDGE_INDEX),'undefined');
+      await page.locator('#global-query').fill('函数');
+      await page.waitForFunction(()=>document.querySelectorAll('.home-knowledge-list a').length===5);
+      assert.match(await page.locator('#knowledge-search-results h3').innerText(),/知识卡 · \d+ 张/);
+      const expected=await page.locator('.home-knowledge-list a').first().getAttribute('href');
+      const all=new URL(await page.locator('.all-knowledge-results').getAttribute('href'),base);
+      assert.equal(all.searchParams.get('q'),'函数');
+      const count=Number((await page.locator('#knowledge-search-results h3').innerText()).match(/(\d+) 张/)[1]);
+      await page.locator('.all-knowledge-results').click();
+      await page.waitForFunction(n=>document.querySelectorAll('.knowledge-card:not([hidden])').length===n,count);
+      assert.equal(await page.locator('#knowledge-query').inputValue(),'函数');
+      await page.goBack();
+      await page.waitForFunction(()=>document.querySelectorAll('.home-knowledge-list a').length===5);
+      const cleared=await page.evaluate(()=>{
+        const input=document.querySelector('#global-query');input.value='向量';input.dispatchEvent(new Event('input',{bubbles:true}));
+        return document.querySelector('#knowledge-search-results').hidden&&document.querySelectorAll('.search-result').length===0;
+      });
+      assert.equal(cleared,true,'输入改变时旧结果应立即清除，而非等到消抖结束');
+      await page.locator('#global-query').fill('函数');
+      await page.waitForFunction(()=>document.querySelectorAll('.home-knowledge-list a').length===5);
+      await page.locator('.home-knowledge-list a').first().click();
+      await page.waitForFunction(id=>document.getElementById(id)?.open,expected.split('#')[1]);
+      assert.equal(new URL(page.url()).hash,expected.slice(expected.indexOf('#')));
+      await page.goBack();
+      await page.waitForFunction(()=>document.querySelectorAll('.home-knowledge-list a').length===5);
+      await page.selectOption('#search-role','自编演示');
+      await page.waitForFunction(()=>document.querySelector('#knowledge-search-results').hidden);
+      assert.match(await page.locator('#search-status').innerText(),/不适用于知识卡/);
+      await page.selectOption('#search-role','');
+      await page.locator('#global-query').fill('条件概率');
+      await page.waitForFunction(()=>document.querySelector('.home-knowledge-list a strong')?.textContent==='条件概率');
+      await page.locator('#global-query').fill('没有这个知识XYZ');
+      await page.waitForFunction(()=>document.querySelector('#knowledge-search-results h3')?.textContent.includes('0 张'));
+      assert.equal(await page.locator('.home-knowledge-list a').count(),0);
+      await page.locator('#global-query').fill('');
+      await page.waitForFunction(()=>document.querySelector('#knowledge-search-results').hidden);
+      await page.waitForFunction(()=>document.querySelector('#search-status').textContent.includes('公开演示'));
+      assert.match(await page.locator('#search-status').innerText(),/公开演示/);
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
+      assert.deepEqual(errors,[]);
+      await page.close();
+      console.log(`dictionary search ${width}: passed`);
+    }
+    const retry=await browser.newPage();
+    let intercepted=0;
+    await retry.route('**/assets/search-index.js',async route=>{
+      if(intercepted++===0)await route.fulfill({status:200,contentType:'text/javascript',body:'window.BOOK_SEARCH_INDEX=[];'});
+      else await route.continue();
+    });
+    await retry.goto(new URL('index.html',base).href);
+    await retry.locator('#global-query').fill('函数');
+    await retry.waitForFunction(()=>document.querySelector('#search-status').textContent.includes('加载失败'));
+    await retry.locator('#global-query').fill('向量');
+    await retry.waitForFunction(()=>document.querySelectorAll('.home-knowledge-list a').length>0);
+    assert.ok(intercepted>=2,'旧索引失败后应允许重新加载');
+    await retry.close();
+    const slow=await browser.newPage();let release;
+    const gate=new Promise(resolve=>{release=resolve;});
+    await slow.route('**/assets/search-index.js',async route=>{await gate;await route.continue();});
+    await slow.goto(new URL('index.html',base).href);
+    await slow.locator('#global-query').fill('Q901');
+    await slow.waitForFunction(()=>document.querySelector('#search-status').textContent.includes('正在检索'));
+    await slow.selectOption('#search-edition','student');
+    assert.equal(await slow.locator('.search-result').count(),0,'索引等待时不应显示上次结果');
+    release();
+    await slow.waitForFunction(()=>document.querySelectorAll('.search-result').length===1);
+    assert.match(await slow.locator('.search-result').getAttribute('href'),/DEMO-09-student\.html#q901$/);
+    await slow.close();
+    console.log('index mismatch retry and delayed student search: passed');
+  } finally {await browser.close();}
+})().catch(e=>{console.error(e);process.exit(1)});

@@ -43,6 +43,10 @@ jobs:
           node tests/publications.cjs
       - name: Check Browser Interaction
         run: node tests/browser.cjs
+      - name: Check Dictionary Search
+        run: node tests/dictionary_search.cjs
+      - name: Check Narrow Formula Layout
+        run: node tests/mobile_math.cjs
       - name: Check Original Exercise Pairs
         run: node tests/extensions.cjs
       - name: Check Public Knowledge Cards
