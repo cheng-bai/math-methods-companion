@@ -46,7 +46,7 @@
       "difficulty": "未标定",
       "stem": "甲盒中有$3$个红球、$2$个白球，乙盒中有$2$个红球、$3$个白球，各盒中除颜色外球无区别。先以概率$\\frac13$选甲盒、以概率$\\frac23$选乙盒；再从选中的盒中随机不放回地取出两个球，各对球等可能。已知取出的两个球都是红球，求所选的是甲盒的概率。",
       "answer": "$\\dfrac35$。",
-      "solution": "记选中甲盒为事件$A$，取出两个红球为事件$B$。按所选盒子分别计算，\n$$\\begin{aligned}P(B\\mid A)&=\\frac{\\binom32}{\\binom52}=\\frac3{10},\\\\ P(B\\mid \\overline A)&=\\frac{\\binom22}{\\binom52}=\\frac1{10}.\\end{aligned}$$\n\n选中甲、乙两盒的情况互斥且覆盖全部可能，所以\n$$P(B)=\\frac13\\cdot\\frac3{10}+\\frac23\\cdot\\frac1{10}=\\frac16.$$\n既然观察到了$B$，要在所有产生$B$的情况中求来自甲盒的比例，故\n$$\\begin{aligned}P(A\\mid B)&=\\frac{P(A)P(B\\mid A)}{P(B)}\\\\&=\\frac{1/10}{1/6}=\\frac35.\\end{aligned}$$",
+      "solution": "记选中甲盒为事件$A$，取出两个红球为事件$B$。按所选盒子分别计算，\n$$\\begin{aligned}P(B\\mid A)&=\\frac{\\binom32}{\\binom52}=\\frac3{10},\\\\ P(B\\mid \\overline A)&=\\frac{\\binom22}{\\binom52}=\\frac1{10}.\\end{aligned}$$\n\n选中甲、乙两盒的情况互斥且覆盖全部可能，所以\n$$\\begin{gathered}P(B)=\\frac13\\cdot\\frac3{10}\\\\+\\frac23\\cdot\\frac1{10}=\\frac16.\\end{gathered}$$\n既然观察到了$B$，要在所有产生$B$的情况中求来自甲盒的比例，故\n$$\\begin{gathered}P(A\\mid B)\\\\=\\frac{P(A)P(B\\mid A)}{P(B)}\\\\=\\frac{1/10}{1/6}=\\frac35.\\end{gathered}$$",
       "equality": "$P(B)=1/6>0$，可据此求条件概率；两球不放回，不能把每次抽到红球的概率都固定为盒内红球初始占比。",
       "note": "“已知选甲求两红”和“已知两红求选甲”方向相反。先按来源计算两红概率，再连同选盒概率一起归一化。"
     },
