@@ -22,7 +22,22 @@ class ExampleLinks(unittest.TestCase):
         validate(self.links, self.knowledge, self.publications)
         self.assertEqual({(r['card_id'], r['question_id']) for r in self.links if r['chapter_id'] == 'DEMO-01'},
                          {('k-3b22fa72', f'Q0{i}') for i in range(1, 6)} |
-                         {('k-2889c7de', 'Q04'), ('k-2889c7de', 'Q05')})
+                         {('k-2889c7de', q) for q in ('Q01', 'Q03', 'Q04', 'Q05')})
+
+    def test_partial_links_preserve_key_boundaries(self):
+        cards = {card['title']: card['id'] for card in self.knowledge['cards']}
+        lookup = {(row['card_id'], row['chapter_id'], row['question_id']): row['focus']
+                  for row in self.links}
+        equal = lookup[cards['等比数列及其通项公式'], 'DEMO-06', 'Q202']
+        self.assertIn('−1/2', equal)
+        self.assertIn('零数列', equal)
+        for qid in ('Q901', 'Q902'):
+            self.assertIn('不直接套无条件', lookup[cards['不放回抽取与恰好计数'], 'DEMO-09', qid])
+        self.assertIn((cards['全概率公式'], 'DEMO-09', 'Q903'), lookup)
+        self.assertNotIn((cards['全概率公式'], 'DEMO-09', 'Q904'), lookup)
+        self.assertIn((cards['三垂线定理'], 'DEMO-07', 'Q704'), lookup)
+        self.assertNotIn((cards['三垂线定理'], 'DEMO-07', 'Q703'), lookup)
+        self.assertIn('不代表完整轨迹题', lookup[cards['求轨迹的方程'], 'DEMO-08', 'Q804'])
 
     def test_reject_invalid_inputs(self):
         variants = [None, {}, [None], self.links + [self.links[0]]]

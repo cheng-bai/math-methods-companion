@@ -250,5 +250,203 @@
     "chapter_id": "DEMO-10",
     "question_id": "Q1004",
     "focus": "把复数模读成距离，联立两圆并检查特殊圆心"
+  },
+  {
+    "card_id": "k-1d87a67d",
+    "chapter_id": "DEMO-06",
+    "question_id": "Q201",
+    "focus": "平移后得到非零等比数列，用首项与公比求通项"
+  },
+  {
+    "card_id": "k-1d87a67d",
+    "chapter_id": "DEMO-06",
+    "question_id": "Q202",
+    "focus": "只对应通项分支：先排除r为0、1及−1/2，零数列不称等比数列"
+  },
+  {
+    "card_id": "k-29b6cf46",
+    "chapter_id": "DEMO-06",
+    "question_id": "Q202",
+    "focus": "只对应r为1的分支：相邻差固定，用等差通项公式"
+  },
+  {
+    "card_id": "k-82918b22",
+    "chapter_id": "DEMO-06",
+    "question_id": "Q202",
+    "focus": "只对应平移常数方程：系数为零先分支，不直接除以含参系数"
+  },
+  {
+    "card_id": "k-5e4aaca8",
+    "chapter_id": "DEMO-02",
+    "question_id": "Q102",
+    "focus": "在各参数分支内解平方不等式，再与该分支范围取交集"
+  },
+  {
+    "card_id": "k-2889c7de",
+    "chapter_id": "DEMO-01",
+    "question_id": "Q01",
+    "focus": "只对应作差一步：分母为正，平方非负，再比较目标与下界"
+  },
+  {
+    "card_id": "k-2889c7de",
+    "chapter_id": "DEMO-01",
+    "question_id": "Q03",
+    "focus": "只对应作差一步：先确定整体变量范围，再按因子符号比较大小"
+  },
+  {
+    "card_id": "k-b17517bf",
+    "chapter_id": "DEMO-04",
+    "question_id": "Q402",
+    "focus": "只对应端点比较：把相差半周的正弦值化成相反数"
+  },
+  {
+    "card_id": "k-a9fc467e",
+    "chapter_id": "DEMO-04",
+    "question_id": "Q404",
+    "focus": "只在给定相位区间内，利用余弦偶性和单调性解比较关系"
+  },
+  {
+    "card_id": "k-24bdabe4",
+    "chapter_id": "DEMO-04",
+    "question_id": "Q404",
+    "focus": "只在第一象限所在的连续分支，利用正切递增转化参数界"
+  },
+  {
+    "card_id": "k-37a0a1c9",
+    "chapter_id": "DEMO-07",
+    "question_id": "Q701",
+    "focus": "只对应线面角所在直角三角形：邻边为正，用正切计算边长比"
+  },
+  {
+    "card_id": "k-37a0a1c9",
+    "chapter_id": "DEMO-07",
+    "question_id": "Q702",
+    "focus": "只对应线面角所在直角三角形：邻边为正，用正切计算边长比"
+  },
+  {
+    "card_id": "k-b9fa0197",
+    "chapter_id": "DEMO-05",
+    "question_id": "Q301",
+    "focus": "非退化三角形提供不共线基向量，用两种表示比较系数"
+  },
+  {
+    "card_id": "k-b9fa0197",
+    "chapter_id": "DEMO-05",
+    "question_id": "Q302",
+    "focus": "非退化三角形提供不共线基向量，用两种表示比较系数"
+  },
+  {
+    "card_id": "k-e76d5dda",
+    "chapter_id": "DEMO-05",
+    "question_id": "Q302",
+    "focus": "用数乘参数表示同一直线上的点，距离比仍须保留参数正负"
+  },
+  {
+    "card_id": "k-ebf31dec",
+    "chapter_id": "DEMO-05",
+    "question_id": "Q303",
+    "focus": "参数取遍实数时配方求模平方最小，再验证最小处的垂直关系"
+  },
+  {
+    "card_id": "k-12701d52",
+    "chapter_id": "DEMO-07",
+    "question_id": "Q701",
+    "focus": "由线面垂直得到底面内的垂直边，再计算角"
+  },
+  {
+    "card_id": "k-12701d52",
+    "chapter_id": "DEMO-07",
+    "question_id": "Q702",
+    "focus": "由线面垂直得到直角，核对投影边长为正后计算角"
+  },
+  {
+    "card_id": "k-12701d52",
+    "chapter_id": "DEMO-07",
+    "question_id": "Q703",
+    "focus": "只对应线面垂直推出线线垂直，再结合向量分解确定斜面内的高"
+  },
+  {
+    "card_id": "k-12701d52",
+    "chapter_id": "DEMO-07",
+    "question_id": "Q704",
+    "focus": "只对应底面距离：点在垂直底面的直线上，垂足固定"
+  },
+  {
+    "card_id": "k-b7616e02",
+    "chapter_id": "DEMO-07",
+    "question_id": "Q704",
+    "focus": "只对应求斜面面积的一步：底面射影垂直底边，推出斜线也垂直底边"
+  },
+  {
+    "card_id": "k-d523ab20",
+    "chapter_id": "DEMO-08",
+    "question_id": "Q804",
+    "focus": "中点纵坐标为零时是竖直弦；其余分支才讨论斜率"
+  },
+  {
+    "card_id": "k-333d9391",
+    "chapter_id": "DEMO-08",
+    "question_id": "Q804",
+    "focus": "局部迁移：候选关系后再构造两个交点验证可实现，不代表完整轨迹题"
+  },
+  {
+    "card_id": "k-b71c5c83",
+    "chapter_id": "DEMO-08",
+    "question_id": "Q804",
+    "focus": "只把候选弦所在直线参数化，用相反参数检验交点与中点"
+  },
+  {
+    "card_id": "k-6ae69a53",
+    "chapter_id": "DEMO-10",
+    "question_id": "Q1001",
+    "focus": "先确认复数除数非零，再乘共轭把分母有理化"
+  },
+  {
+    "card_id": "k-6ae69a53",
+    "chapter_id": "DEMO-10",
+    "question_id": "Q1002",
+    "focus": "先确认复数除数非零，再乘共轭把分母有理化"
+  },
+  {
+    "card_id": "k-73b28a90",
+    "chapter_id": "DEMO-10",
+    "question_id": "Q1003",
+    "focus": "把复数的实部和虚部作为点的两个实坐标，再联立距离条件"
+  },
+  {
+    "card_id": "k-73b28a90",
+    "chapter_id": "DEMO-10",
+    "question_id": "Q1004",
+    "focus": "实轴对称把非实轴公共点成对出现，利用坐标表示检验唯一性"
+  },
+  {
+    "card_id": "k-8c6e7d3e",
+    "chapter_id": "DEMO-09",
+    "question_id": "Q901",
+    "focus": "只对应按颜色用组合数计数；条件已改变分母，不直接套无条件概率公式"
+  },
+  {
+    "card_id": "k-8c6e7d3e",
+    "chapter_id": "DEMO-09",
+    "question_id": "Q902",
+    "focus": "只对应按颜色用组合数计数；条件已改变分母，不直接套无条件概率公式"
+  },
+  {
+    "card_id": "k-c2308931",
+    "chapter_id": "DEMO-09",
+    "question_id": "Q903",
+    "focus": "两盒来源互斥且权重为正，先按来源加权求观察结果的总概率"
+  },
+  {
+    "card_id": "k-db26904c",
+    "chapter_id": "DEMO-09",
+    "question_id": "Q903",
+    "focus": "观察事件概率为正，再按联合概率与条件事件概率的比值反推来源"
+  },
+  {
+    "card_id": "k-db26904c",
+    "chapter_id": "DEMO-09",
+    "question_id": "Q904",
+    "focus": "只对应条件概率定义：观察事件概率始终为正，包含选盒概率端点"
   }
 ]
