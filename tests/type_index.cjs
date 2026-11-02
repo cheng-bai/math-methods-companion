@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs/promises'),path=r
 const {pathToFileURL}=require('node:url');const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 (async()=>{
   const root=path.resolve(__dirname,'..'),base=process.env.PUBLIC_BASE_URL||pathToFileURL(path.join(root,'dist')+'/').href;
-  const files=['demo.json','functions.json','sequences.json','trigonometry.json','vectors.json','stereometry.json','conics.json','probability.json','complex.json'];
+  const files=['demo.json','functions.json','sequences.json','trigonometry.json','vectors.json','stereometry.json','conics.json','probability.json','complex.json','counting.json'];
   const chapters=await Promise.all(files.map(async f=>JSON.parse(await fs.readFile(path.join(root,'content',f),'utf8'))));
   const types=chapters.flatMap(c=>[...new Set(c.questions.map(q=>q.type_id))].map(id=>({chapter:c.id,id})));
   const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH||undefined});

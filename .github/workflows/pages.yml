@@ -37,6 +37,10 @@ jobs:
         run: |
           python3 tests/example_links.py
           node tests/example_links.cjs
+      - name: Check Counting Examples
+        run: |
+          python3 tests/counting.py
+          node tests/counting.cjs
       - name: Check Multiple Public Lessons
         run: |
           python3 tests/publications.py

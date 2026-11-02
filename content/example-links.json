@@ -448,5 +448,29 @@
     "chapter_id": "DEMO-09",
     "question_id": "Q904",
     "focus": "只对应条件概率定义：观察事件概率始终为正，包含选盒概率端点"
+  },
+  {
+    "card_id": "k-fa41bf2b",
+    "chapter_id": "DEMO-11",
+    "question_id": "Q1101",
+    "focus": "分步安排骨架与空位，乘法原理要求步骤可唯一还原"
+  },
+  {
+    "card_id": "k-fa41bf2b",
+    "chapter_id": "DEMO-11",
+    "question_id": "Q1102",
+    "focus": "分步安排骨架与空位，乘法原理要求步骤可唯一还原"
+  },
+  {
+    "card_id": "k-69891ee5",
+    "chapter_id": "DEMO-11",
+    "question_id": "Q1101",
+    "focus": "不同记录员依次放入不同可用空位，使用排列计数"
+  },
+  {
+    "card_id": "k-69891ee5",
+    "chapter_id": "DEMO-11",
+    "question_id": "Q1102",
+    "focus": "不同记录员依次放入不同可用空位，使用排列计数"
   }
 ]

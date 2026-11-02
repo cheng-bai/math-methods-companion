@@ -7,7 +7,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
   const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH||undefined});
   const failures=[];
   try {
-    for(const chapter of ['DEMO-01','DEMO-02','DEMO-04','DEMO-05','DEMO-06','DEMO-07','DEMO-08','DEMO-09','DEMO-10'])for(const width of [320,360,390])for(const edition of ['teacher','student']){
+    for(const chapter of ['DEMO-01','DEMO-02','DEMO-04','DEMO-05','DEMO-06','DEMO-07','DEMO-08','DEMO-09','DEMO-10','DEMO-11'])for(const width of [320,360,390])for(const edition of ['teacher','student']){
       const page=await browser.newPage({viewport:{width,height:850}});
       await page.goto(new URL(`chapters/${chapter}-${edition}.html`,base).href);
       await page.waitForFunction(()=>document.documentElement.dataset.ready==='true');
