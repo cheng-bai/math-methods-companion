@@ -61,7 +61,7 @@
       "difficulty": "未标定",
       "stem": "设$a\\ge0$。在$x\\in[0,\\frac\\pi2]$内解不等式$a\\sin x+\\cos x\\ge1$，并求使它对该区间所有$x$都成立的$a$范围。",
       "answer": "令$\\theta\\in[0,\\frac\\pi2)$满足$\\tan\\theta=a$，则解集为$[0,\\min\\{\\frac\\pi2,2\\theta\\}]$。不等式对整个区间恒成立当且仅当$a\\ge1$。",
-      "solution": "取$\\theta\\in[0,\\frac\\pi2)$使$\\tan\\theta=a$，并设$R=\\sqrt{1+a^2}$。于是$\\cos\\theta=1/R$，$\\sin\\theta=a/R$，从而\n$$a\\sin x+\\cos x=R\\cos(x-\\theta).$$\n因此原不等式等价于$\\cos(x-\\theta)\\ge\\cos\\theta$。由于$x\\in[0,\\frac\\pi2]$及$\\theta\\in[0,\\frac\\pi2)$，有$x-\\theta\\in[-\\theta,\\frac\\pi2-\\theta]\\subset(-\\pi,\\pi)$。在这个范围内，$\\cos u\\ge\\cos\\theta$等价于$-\\theta\\le u\\le\\theta$。代回并与原区间取交集，得到\n$$x\\in[0,\\min\\{\\tfrac\\pi2,2\\theta\\}].$$\n\n若不等式对整个原区间成立，须且只须$2\\theta\\ge\\frac\\pi2$，即$\\theta\\ge\\frac\\pi4$。利用正切在$[0,\\frac\\pi2)$上递增，得$a=\\tan\\theta\\ge1$。",
+      "solution": "取$\\theta\\in[0,\\frac\\pi2)$使$\\tan\\theta=a$，并设$R=\\sqrt{1+a^2}$。于是$\\cos\\theta=1/R$，$\\sin\\theta=a/R$，从而\n$$\\begin{gathered}a\\sin x+\\cos x\\\\=R\\cos(x-\\theta).\\end{gathered}$$\n因此原不等式等价于$\\cos(x-\\theta)\\ge\\cos\\theta$。由于$x\\in[0,\\frac\\pi2]$及$\\theta\\in[0,\\frac\\pi2)$，有$x-\\theta\\in[-\\theta,\\frac\\pi2-\\theta]$，该区间包含于$(-\\pi,\\pi)$。在这个范围内，$\\cos u\\ge\\cos\\theta$等价于$-\\theta\\le u\\le\\theta$。代回并与原区间取交集，得到\n$$x\\in[0,\\min\\{\\tfrac\\pi2,2\\theta\\}].$$\n\n若不等式对整个原区间成立，须且只须$2\\theta\\ge\\frac\\pi2$，即$\\theta\\ge\\frac\\pi4$。利用正切在$[0,\\frac\\pi2)$上递增，得$a=\\tan\\theta\\ge1$。",
       "equality": "当$a=0$时$\\theta=0$，解集退化为$\\{0\\}$；当$a=1$时$2\\theta=\\frac\\pi2$，右端也取等，所以$a=1$包含在恒成立范围内。对$a>1$，原区间的右端严格满足不等式，左端始终取等。",
       "note": "对每个固定$a$，先确定角$\\theta$再解$x$；“对所有$x$”要求所得解集覆盖整个原区间，不能只验证某个点。"
     }
