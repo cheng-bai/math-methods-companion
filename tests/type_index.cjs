@@ -19,7 +19,7 @@ const {pathToFileURL}=require('node:url');const {chromium}=require(process.env.P
       assert.match(await page.locator('#type-count').textContent(),new RegExp(`1 / ${types.length}`));
       await page.reload();assert.equal(await page.locator('#type-query').inputValue(),'Q901');
       await page.locator('.type-index-item:visible a').first().click();
-      await page.waitForFunction(()=>document.documentElement.dataset.ready==='true');
+      await page.waitForFunction(()=>document.documentElement?.dataset.ready==='true');
       assert.equal(await page.locator('.type-group:target').count(),1);
       assert.equal(await page.locator('.type-group:target').evaluate(n=>n.closest('details').open),true);
       await page.locator('.page-footer a[href^="../types.html"]').click();
@@ -36,7 +36,7 @@ const {pathToFileURL}=require('node:url');const {chromium}=require(process.env.P
       await page.locator('#type-query').fill('Q1004');
       assert.equal(await page.locator('.type-index-item:visible').count(),1);
       await page.locator('.type-index-item:visible a').filter({hasText:'学生版'}).click();
-      await page.waitForFunction(()=>document.documentElement.dataset.ready==='true');
+      await page.waitForFunction(()=>document.documentElement?.dataset.ready==='true');
       assert.ok(page.url().includes('DEMO-10-student.html#type-'));
       assert.equal(await page.locator('.solution').count(),0);
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
