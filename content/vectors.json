@@ -61,7 +61,7 @@
       "difficulty": "未标定",
       "stem": "已知非零平面向量$\\mathbf a,\\mathbf b$满足$|\\mathbf a|=2$，$|\\mathbf b|=1$，二者夹角为$\\frac\\pi3$。设$t\\in\\mathbb R$，若$\\mathbf a-t\\mathbf b$与$\\mathbf a+\\mathbf b$的夹角为$\\frac\\pi3$，求$t$。",
       "answer": "$t=\\dfrac43$。",
-      "solution": "由已知，$\\mathbf a\\cdot\\mathbf b=1$。把夹角条件转换为数量积等式，需同时计算模和数量积。令$\\mathbf u=\\mathbf a-t\\mathbf b$、$\\mathbf v=\\mathbf a+\\mathbf b$，则\n$$\\begin{gathered}\n|\\mathbf u|^2=t^2-2t+4,\\\\\n|\\mathbf v|^2=4+2+1=7,\\\\\n\\mathbf u\\cdot\\mathbf v=5-2t.\n\\end{gathered}$$\n其中$t^2-2t+4=(t-1)^2+3>0$，所以两个向量都非零。由夹角为$\\frac\\pi3$，得到原方程\n$$5-2t=\\frac{\\sqrt7}{2}\\sqrt{t^2-2t+4}.$$\n右侧为正，所以必须有$5-2t>0$。将方程两边平方并整理，得\n$$3t^2-22t+24=0,$$\n解得$t=\\frac43$或$t=6$。$t=6$使$5-2t<0$，不满足原方程；$t=\\frac43$使左侧为正，并满足平方后的等式，因此满足原方程。所求为$t=\\frac43$。",
+      "solution": "由已知，$\\mathbf a\\cdot\\mathbf b=1$。把夹角条件转换为数量积等式，需同时计算模和数量积。令$\\mathbf u=\\mathbf a-t\\mathbf b$、$\\mathbf v=\\mathbf a+\\mathbf b$，则\n$$\\begin{gathered}\n|\\mathbf u|^2=t^2-2t+4,\\\\\n|\\mathbf v|^2=4+2+1=7,\\\\\n\\mathbf u\\cdot\\mathbf v=5-2t.\n\\end{gathered}$$\n其中$t^2-2t+4=(t-1)^2+3$，该值大于零，所以两个向量都非零。由夹角为$\\frac\\pi3$，得到原方程\n$$5-2t=\\frac{\\sqrt7}{2}\\sqrt{t^2-2t+4}.$$\n右侧为正，所以必须有$5-2t>0$。将方程两边平方并整理，得\n$$3t^2-22t+24=0,$$\n解得$t=\\frac43$或$t=6$。$t=6$使$5-2t<0$，不满足原方程；$t=\\frac43$使左侧为正，并满足平方后的等式，因此满足原方程。所求为$t=\\frac43$。",
       "equality": "$\\mathbf a-t\\mathbf b$的模对所有$t$均为正，$\\mathbf a+\\mathbf b$的模为$\\sqrt7$，夹角始终有定义。$t=6$对应数量积为负，与题设的正余弦相冲突，不能因满足平方方程而保留。",
       "note": "平方去根号得到的只是必要条件。先记录原式两边的符号，再对候选值回代或用同号性与平方等式共同验证。"
     }

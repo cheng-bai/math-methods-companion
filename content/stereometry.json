@@ -46,7 +46,7 @@
       "difficulty": "未标定",
       "stem": "在三棱锥$P\\! -\\! ABC$中，$PA\\perp$平面$ABC$，$\\angle BAC=90^\\circ$，且$AB=3$、$AC=4$、$PA=6$。求点$A$到平面$PBC$的距离。",
       "answer": "$\\dfrac{12}{\\sqrt{29}}$。",
-      "solution": "要求$A$到平面$PBC$的距离，可把它看作三棱锥$A\\! -\\! PBC$以$PBC$为底时的高。同一个三棱锥也可用底面$ABC$与高$PA$求体积：$$V=\\frac13\\cdot\\frac{3\\cdot4}{2}\\cdot6=12.$$\n\n为了求$\\triangle PBC$的面积，作$AD\\perp BC$，垂足为$D$。$ABC$为直角三角形，$BC=5$，由面积得$AD=\\frac{12}{5}$。又$PA\\perp BC$，而$\\overrightarrow{PD}=\\overrightarrow{PA}+\\overrightarrow{AD}$，故$PD\\perp BC$，于是$$\\begin{gathered}PD=\\sqrt{PA^2+AD^2}\\\\=\\frac{6\\sqrt{29}}5.\\end{gathered}$$因此$$S_{PBC}=\\frac12\\cdot5\\cdot\\frac{6\\sqrt{29}}5=3\\sqrt{29}.$$\n\n设所求距离为$h$，由$12=\\frac13S_{PBC}h$得$$h=\\frac{12}{\\sqrt{29}}.$$",
+      "solution": "要求$A$到平面$PBC$的距离，可把它看作三棱锥$A\\! -\\! PBC$以$PBC$为底时的高。同一个三棱锥也可用底面$ABC$与高$PA$求体积：$$V=\\frac13\\cdot\\frac{3\\cdot4}{2}\\cdot6=12.$$\n\n为了求$\\triangle PBC$的面积，作$AD\\perp BC$，垂足为$D$。$ABC$为直角三角形，$BC=5$，由面积得$AD=\\frac{12}{5}$。又$PA\\perp BC$，而$\\overrightarrow{PD}=\\overrightarrow{PA}+\\overrightarrow{AD}$，故$PD\\perp BC$，于是$$\\begin{gathered}PD=\\sqrt{PA^2+AD^2}\\\\=\\frac{6\\sqrt{29}}5.\\end{gathered}$$因此$$\\begin{gathered}S_{PBC}=\\frac12\\cdot5\\cdot\\frac{6\\sqrt{29}}5\\\\=3\\sqrt{29}.\\end{gathered}$$\n\n设所求距离为$h$，由$12=\\frac13S_{PBC}h$得$$h=\\frac{12}{\\sqrt{29}}.$$",
       "equality": "$BC>0$且$P\\notin$平面$ABC$，所以$\\triangle PBC$面积非零；用体积除以其面积合法，所得为非负的点面距离。",
       "note": "距离是“换底后的高”。求斜面面积时，不能把$AD$当成斜面内的高；要先证明连接$P$与垂足的$PD$垂直$BC$。"
     },
